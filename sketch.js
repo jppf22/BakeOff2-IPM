@@ -146,10 +146,16 @@ function mousePressed()
     for (var i = 0; i < legendas.getRowCount(); i++)
     {
       // Check if the user clicked over one of the targets
-      if (targets[i].clicked(mouseX, mouseY)) 
+      console.log(targets[i].x, targets[i].y, mouseX, mouseY, targets[i].label);
+      if (targets[i].clicked(mouseX, mouseY))
       {
         // Checks if it was the correct target
-        if (targets[i].id === trials[current_trial] + 1) hits++;
+        console.log(targets[i].label, targets[i].id, trials[current_trial] + 1);
+
+        if (targets[i].id == trials[current_trial] + 1) {
+          hits++;
+          console.log(hit);
+        }
         else misses++;
         
         current_trial++;              // Move on to the next trial/target
@@ -213,10 +219,23 @@ function createTargets(target_size, horizontal_gap, vertical_gap)
       
       // Find the appropriate label and ID for this target
       let legendas_index = c + GRID_COLUMNS * r;
-      let target_id = legendas.getNum(legendas_index, 0);  
-      let target_label = legendas.getString(legendas_index, 1);   
+
+      // Assuming 'legendas' is a p5.Table object
+      let legendasArray = legendas.getArray();
+
+      // Sort the array based on the second column (index 1)
+      legendasArray.sort((a, b) => a[1].localeCompare(b[1]));
+      
+      console.log(legendasArray);
+
+      let target_id = legendasArray[legendas_index][0];
+      
+      let target_label = legendasArray[legendas_index][1];
       
       let target = new Target(target_x, target_y + 40, target_size, target_label, target_id);
+
+      console.log(target_label, target_x, target_y, target.id);
+
       targets.push(target);
     }  
   }
