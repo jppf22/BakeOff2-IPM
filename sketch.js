@@ -154,7 +154,7 @@ function mousePressed()
 
         if (targets[i].id == trials[current_trial] + 1) {
           hits++;
-          console.log(hit);
+          console.log(hits);
         }
         else misses++;
         
