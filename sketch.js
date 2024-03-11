@@ -214,9 +214,11 @@ function createTargets(target_size, horizontal_gap, vertical_gap)
   {
     for (var c = 0; c < GRID_COLUMNS; c++)
     {
-      let target_x = 40 + (h_margin + target_size) * c + target_size/2;        // give it some margin from the left border
-      let target_y = (v_margin + target_size) * r + target_size/2;
-      
+      // Calculate the x and y position for each target
+      // These values focus on clustering the targets more, so that they are closer to the center of the screen
+      let target_x = 220 + (h_margin + (target_size/2))*c + target_size/2;
+      let target_y = 10 + (v_margin + target_size*0.80)*r + target_size;
+
       // Find the appropriate label and ID for this target
       let legendas_index = c + GRID_COLUMNS * r;
 
@@ -259,7 +261,9 @@ function windowResized()
     let screen_height  = display.height * 2.54;            // screen height
     let target_size    = 2;                                // sets the target size (will be converted to cm when passed to createTargets)
     let horizontal_gap = screen_width - target_size * GRID_COLUMNS;// empty space in cm across the x-axis (based on 10 targets per row)
+    //let horizontal_gap = (target_size/2)*GRID_COLUMNS;
     let vertical_gap   = screen_height - target_size * GRID_ROWS;  // empty space in cm across the y-axis (based on 8 targets per column)
+    //let vertical_gap_gap = (target_size/2)*GRID_COLUMNS;
 
     // Creates and positions the UI targets according to the white space defined above (in cm!)
     // 80 represent some margins around the display (e.g., for text)
