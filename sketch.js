@@ -233,8 +233,10 @@ function createTargets(target_size, horizontal_gap, vertical_gap)
       let target_id = legendasArray[legendas_index][0];
       
       let target_label = legendasArray[legendas_index][1];
+
+      let target_color = assignTargetColor(target_label);
       
-      let target = new Target(target_x, target_y + 40, target_size, target_label, target_id);
+      let target = new Target(target_x, target_y, target_size, target_label, target_id, target_color[0], target_color[1], target_color[2]);
 
       console.log(target_label, target_x, target_y, target.id);
 
@@ -272,4 +274,73 @@ function windowResized()
     // Starts drawing targets immediately after we go fullscreen
     draw_targets = true;
   }
+}
+
+
+// OUR FUNCTIONS ---------------------------
+
+function assignTargetColor(target_label){
+  let color_r = 0;
+  let color_g = 0;
+  let color_b = 0;
+
+  switch(target_label[1]){
+    case "a":
+      color_r = 169;
+      color_g = 169;
+      color_b = 169; // Dark Gray
+      break;
+    case "e":
+      color_r = 0;
+      color_g = 0;
+      color_b = 205; // Medium Blue
+      break;
+    case "h":
+      color_r = 138;
+      color_g = 43;
+      color_b = 226; // Deep Purple
+      break;
+    case "i":
+      color_r = 34;
+      color_g = 139;
+      color_b = 34; // Forest Green
+      break;
+    case "l":
+      color_r = 255;
+      color_g = 0;
+      color_b = 0; // Vivid Red
+      break;
+    case "n":
+      color_r = 255;
+      color_g = 165;
+      color_b = 0; // Bright Orange
+      break;
+    case "o":
+      color_r = 173;
+      color_g = 216;
+      color_b = 230; // Light Blue
+      break;
+    case "r":
+      color_r = 32;
+      color_g = 178;
+      color_b = 170; // Seafoam Green
+      break;
+    case "u":
+      color_r = 192;
+      color_g = 192;
+      color_b = 192; // Silver
+      break;
+    case "y":
+      color_r = 154;
+      color_g = 205;
+      color_b = 50; // YellowGreen
+      break;
+    case "é":
+      color_r = 147;
+      color_g = 112;
+      color_b = 219; // MediumPurple
+      break;
+  }
+
+  return [color_r, color_g, color_b];
 }
