@@ -222,21 +222,47 @@ function createTargets(target_size, screen_width, screen_height)
   let a_counter = 0;
   let a_line = 0;
 
-  let é_counter = 0;
   let e_counter = 0;
+  let e_line = 0;
+
   let h_counter = 0;
+
   let i_counter = 0;
-  let l_counter = 0;
-  let n_counter = 0;
+  let i_line = 0;
+
   let o_counter = 0;
+  let o_line = 0;
+
   let r_counter = 0;
+  let r_line = 0;
+
   let u_counter = 0;
+  let u_line = 0;
+
   let y_counter = 0;
 
-  let a_x_start = screen_width - screen_width*0.2;
-  let a_y_start = screen_height - screen_height*0.05;
+  let a_x_start = 100;
+  let a_y_start = 100;
+  
+  let e_x_start = a_x_start + (target_size*1.2)*5 + 150;
+  let e_y_start = a_y_start;
 
-  for(var legendas_index= 0; legendas_index < 27; legendas_index++){
+  let h_x_start = e_x_start;
+  let h_y_start = e_y_start + (target_size*1.2) + 100;
+
+  let i_x_start = h_x_start + (target_size*1.2)*1.5;
+  let i_y_start = h_y_start;
+
+  let o_x_start = a_x_start;
+  let o_y_start = a_y_start + (target_size*1.2)*4 + 100;
+
+  let r_x_start = o_x_start + (target_size*1.2) + 125;
+  let r_y_start = o_y_start;
+
+  let u_x_start = r_x_start + (target_size*1.2)*4 + 125;
+  let u_y_start = r_y_start;
+
+  for(var legendas_index= 0; legendas_index < 80; legendas_index++){
       let target_label = legendasArray[legendas_index][1];
       let target_id = legendasArray[legendas_index][0];
       let target_color = assignTargetColor(target_label);
@@ -244,32 +270,73 @@ function createTargets(target_size, screen_width, screen_height)
       // NEW CODE --------------------------------
       switch(target_label[1]){
         case 'a':
-          target_x = a_x_start + (target_size/2)*(a_counter%6) + target_size/2; 
-          if(a_counter%6 == 0){
+          target_x = a_x_start + (target_size*1.2)*(a_counter%6); 
+          if(a_counter%6 == 0 && a_counter != 0){
             a_line++;
           }
-          target_y = a_y_start + (target_size/2)*a_line + target_size/2;
+          target_y = a_y_start + target_size*a_line;
           a_counter++;
           break;
         case 'é':
+          target_x = e_x_start + (target_size*1.2)*5;
+          target_y = e_y_start + target_size*0.5;
           break;
         case 'e':
+          target_x = e_x_start + (target_size*1.2)*(e_counter%5);
+          if(e_counter%5 == 0 && e_counter != 0){
+            e_line++;
+          }
+          target_y = e_y_start + target_size*e_line;
+          e_counter++;
           break;
         case 'h':
+          target_x = h_x_start;
+          target_y = h_y_start + target_size*h_counter;
+          h_counter++;
           break;
         case 'i':
+          target_x = i_x_start + (target_size*1.2)*(i_counter%3);
+          if(i_counter%3 == 0 && i_counter != 0){
+            i_line++;
+          }
+          target_y = i_y_start + target_size*i_line;
+          i_counter++;
           break;
         case 'l':
+          target_x = i_x_start + (target_size*1.2)*3.5;
+          target_y = i_y_start;
           break;
         case 'n':
+          target_x = i_x_start + (target_size*1.2)*3.5;
+          target_y = i_y_start + target_size*2;
           break;
         case 'o':
+          target_x = o_x_start + (target_size*1.2)*(o_counter%2);
+          if(o_counter%2 == 0 && o_counter != 0){
+            o_line++;
+          }
+          target_y = o_y_start + target_size*o_line;
+          o_counter++;
           break;
         case 'r':
+          target_x = r_x_start + (target_size*1.2)*(r_counter%5);
+          if(r_counter%5 == 0 && r_counter != 0){
+            r_line++;
+          }
+          target_y = r_y_start + target_size*r_line;
+          r_counter++;
           break;
         case 'u':
+          target_x = u_x_start + (target_size*1.2)*(u_counter%5);
+          if(u_counter%5 == 0 && u_counter != 0){
+            u_line++;
+          }
+          target_y = u_y_start + target_size*u_line;
+          u_counter++;
           break;
         case 'y':
+          target_x = u_x_start + (target_size*1.2)*2;
+          target_y = u_y_start + target_size*2.25;
           break;
       }
 
@@ -279,6 +346,8 @@ function createTargets(target_size, screen_width, screen_height)
       console.log(target_label, target_x, target_y, target.id);
       targets.push(target);
   }
+
+  // After iterating, draw the squares containing the grouped targets with a caption specifying the letter group
 
 
   // Define the margins between targets by dividing the white space 
