@@ -29,8 +29,18 @@ let attempt               = 0;      // users complete each test twice to account
 
 // Target list and layout variables
 let targets               = [];
-const GRID_ROWS           = 8;      // We divide our 80 targets in a 8x10 grid
-const GRID_COLUMNS        = 10;     // We divide our 80 targets in a 8x10 grid
+const ELEMENTS            = 80;     // number of different targets
+const ELEMENTS_A          = 27;
+const ELEMENTS_É          =  1;
+const ELEMENTS_E          =  10;
+const ELEMENTS_H          =  3;
+const ELEMENTS_I          =  9;
+const ELEMENTS_L          =  1;
+const ELEMENTS_N          =  1;
+const ELEMENTS_O          =  4;
+const ELEMENTS_R          =  13;
+const ELEMENTS_U          =  10;
+const ELEMENTS_Y          =  1;
 
 // Ensures important data is loaded before the program starts
 function preload()
@@ -202,10 +212,79 @@ function continueTest()
 }
 
 // Creates and positions the UI targets
-function createTargets(target_size, horizontal_gap, vertical_gap)
+function createTargets(target_size, screen_width, screen_height)
 {
+  
+  let legendasArray = legendas.getArray();
+  legendasArray.sort((a, b) => a[1].localeCompare(b[1]));
+  console.log(legendasArray);
+  
+  let a_counter = 0;
+  let a_line = 0;
+
+  let é_counter = 0;
+  let e_counter = 0;
+  let h_counter = 0;
+  let i_counter = 0;
+  let l_counter = 0;
+  let n_counter = 0;
+  let o_counter = 0;
+  let r_counter = 0;
+  let u_counter = 0;
+  let y_counter = 0;
+
+  let a_x_start = screen_width - screen_width*0.2;
+  let a_y_start = screen_height - screen_height*0.05;
+
+  for(var legendas_index= 0; legendas_index < 27; legendas_index++){
+      let target_label = legendasArray[legendas_index][1];
+      let target_id = legendasArray[legendas_index][0];
+      let target_color = assignTargetColor(target_label);
+      
+      // NEW CODE --------------------------------
+      switch(target_label[1]){
+        case 'a':
+          target_x = a_x_start + (target_size/2)*(a_counter%6) + target_size/2; 
+          if(a_counter%6 == 0){
+            a_line++;
+          }
+          target_y = a_y_start + (target_size/2)*a_line + target_size/2;
+          a_counter++;
+          break;
+        case 'é':
+          break;
+        case 'e':
+          break;
+        case 'h':
+          break;
+        case 'i':
+          break;
+        case 'l':
+          break;
+        case 'n':
+          break;
+        case 'o':
+          break;
+        case 'r':
+          break;
+        case 'u':
+          break;
+        case 'y':
+          break;
+      }
+
+      // -----------------------------------------
+
+      let target = new Target(target_x, target_y, target_size, target_label, target_id, target_color[0], target_color[1], target_color[2]);
+      console.log(target_label, target_x, target_y, target.id);
+      targets.push(target);
+  }
+
+
   // Define the margins between targets by dividing the white space 
   // for the number of targets minus one
+
+  /*
   h_margin = horizontal_gap / (GRID_COLUMNS -1);
   v_margin = vertical_gap / (GRID_ROWS - 1);
   
@@ -214,27 +293,30 @@ function createTargets(target_size, horizontal_gap, vertical_gap)
   {
     for (var c = 0; c < GRID_COLUMNS; c++)
     {
+
+      // Find the appropriate label and ID for this target
+      let legendas_index = c + GRID_COLUMNS * r;
+
+      let target_label = legendasArray[legendas_index][1];
+      let target_id = legendasArray[legendas_index][0];
+      let target_color = assignTargetColor(target_label);
+
+      // Assuming 'legendas' is a p5.Table object
+      let legendasArray = legendas.getArray();
+      
+      // Sort the array based on the second column (index 1)
+      legendasArray.sort((a, b) => a[1].localeCompare(b[1]));
+      console.log(legendasArray);
+      
       // Calculate the x and y position for each target
       // These values focus on clustering the targets more, so that they are closer to the center of the screen
       let target_x = 220 + (h_margin + (target_size/2))*c + target_size/2;
       let target_y = 10 + (v_margin + target_size*0.80)*r + target_size;
 
-      // Find the appropriate label and ID for this target
-      let legendas_index = c + GRID_COLUMNS * r;
 
-      // Assuming 'legendas' is a p5.Table object
-      let legendasArray = legendas.getArray();
-
-      // Sort the array based on the second column (index 1)
-      legendasArray.sort((a, b) => a[1].localeCompare(b[1]));
       
-      console.log(legendasArray);
 
-      let target_id = legendasArray[legendas_index][0];
-      
-      let target_label = legendasArray[legendas_index][1];
 
-      let target_color = assignTargetColor(target_label);
       
       let target = new Target(target_x, target_y, target_size, target_label, target_id, target_color[0], target_color[1], target_color[2]);
 
@@ -243,6 +325,7 @@ function createTargets(target_size, horizontal_gap, vertical_gap)
       targets.push(target);
     }  
   }
+  */
 }
 
 // Is invoked when the canvas is resized (e.g., when we go fullscreen)
@@ -262,14 +345,20 @@ function windowResized()
     let screen_width   = display.width * 2.54;             // screen width
     let screen_height  = display.height * 2.54;            // screen height
     let target_size    = 2;                                // sets the target size (will be converted to cm when passed to createTargets)
+
+    /*
+
     let horizontal_gap = screen_width - target_size * GRID_COLUMNS;// empty space in cm across the x-axis (based on 10 targets per row)
     //let horizontal_gap = (target_size/2)*GRID_COLUMNS;
     let vertical_gap   = screen_height - target_size * GRID_ROWS;  // empty space in cm across the y-axis (based on 8 targets per column)
     //let vertical_gap_gap = (target_size/2)*GRID_COLUMNS;
-
+    
     // Creates and positions the UI targets according to the white space defined above (in cm!)
     // 80 represent some margins around the display (e.g., for text)
     createTargets(target_size * PPCM, horizontal_gap * PPCM - 80, vertical_gap * PPCM - 80);
+    */
+    
+    createTargets(target_size * PPCM, screen_width, screen_height)
 
     // Starts drawing targets immediately after we go fullscreen
     draw_targets = true;
