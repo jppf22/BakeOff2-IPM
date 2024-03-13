@@ -27,7 +27,7 @@ let trials;                         // contains the order of targets that activa
 let current_trial         = 0;      // the current trial number (indexes into trials array above)
 let attempt               = 0;      // users complete each test twice to account for practice (attemps 0 and 1)
 
-// Target list and layout variables
+// Target and Frame list and layout variables
 let targets               = [];
 const ELEMENTS            = 80;     // number of different targets
 const ELEMENTS_A          = 27;
@@ -41,6 +41,9 @@ const ELEMENTS_O          =  4;
 const ELEMENTS_R          =  13;
 const ELEMENTS_U          =  10;
 const ELEMENTS_Y          =  1;
+
+let frames                = [];
+const N_FRAMES            = 10;     // number of frames to be drawn   
 
 // Ensures important data is loaded before the program starts
 function preload()
@@ -72,7 +75,8 @@ function draw()
     fill(color(255,255,255));
     textAlign(LEFT);
     text("Trial " + (current_trial + 1) + " of " + trials.length, 50, 20);
-        
+  
+
     // Draw all targets
 	for (var i = 0; i < legendas.getRowCount(); i++) targets[i].draw();
     
@@ -86,6 +90,12 @@ function draw()
     fill(color(255,255,255)); 
     textAlign(CENTER); 
     text(legendas.getString(trials[current_trial],1), width/2, height - 20);
+  }
+
+
+  if (draw_targets && attempt < 2){
+    // Draws the frames
+    for (var i = 0; i < frames.length; i++) frames[i].draw();
   }
 }
 
@@ -221,25 +231,30 @@ function createTargets(target_size, screen_width, screen_height)
   
   let a_counter = 0;
   let a_line = 0;
+  let is_frame_a_created = false;
 
   let e_counter = 0;
   let e_line = 0;
+  let is_frame_e_created = false;
 
   let h_counter = 0;
+  let is_frame_h_created = false;
 
   let i_counter = 0;
   let i_line = 0;
+  let is_frame_i_created = false;
 
   let o_counter = 0;
   let o_line = 0;
+  let is_frame_o_created = false;
 
   let r_counter = 0;
   let r_line = 0;
+  let is_frame_r_created = false;
 
   let u_counter = 0;
   let u_line = 0;
-
-  let y_counter = 0;
+  let is_frame_u_created = false;
 
   let a_x_start = 100;
   let a_y_start = 100;
@@ -272,14 +287,25 @@ function createTargets(target_size, screen_width, screen_height)
         case 'a':
           target_x = a_x_start + (target_size*1.2)*(a_counter%6); 
           if(a_counter%6 == 0 && a_counter != 0){
-            a_line++;
+        a_line++;
           }
           target_y = a_y_start + target_size*a_line;
           a_counter++;
+
+          if(!is_frame_a_created){
+            let frame_a = new Frame(a_x_start - (target_size*0.5+10), a_y_start - (target_size*0.5+10), (target_size + 20)*6 - 10, (target_size*5) + 20, "BA", target_color[0], target_color[1], target_color[2]);
+            frames.push(frame_a);
+            is_frame_a_created = true;
+          }
+
           break;
         case 'é':
           target_x = e_x_start + (target_size*1.2)*5;
           target_y = e_y_start + target_size*0.5;
+
+          let frame_é = new Frame(target_x - (target_size*0.5+10), target_y - (target_size*0.5+10), target_size + 20, target_size + 20, "BÉ", target_color[0], target_color[1], target_color[2]);
+          frames.push(frame_é);
+
           break;
         case 'e':
           target_x = e_x_start + (target_size*1.2)*(e_counter%5);
@@ -288,12 +314,27 @@ function createTargets(target_size, screen_width, screen_height)
           }
           target_y = e_y_start + target_size*e_line;
           e_counter++;
+
+          if(!is_frame_e_created){
+            let frame_e = new Frame(e_x_start - (target_size*0.5+10), e_y_start - (target_size*0.5+10), (target_size + 20)*5 - 10, (target_size*2) + 20, "BE", target_color[0], target_color[1], target_color[2]);
+            frames.push(frame_e);
+            is_frame_e_created = true;
+          }
+      
           break;
         case 'h':
           target_x = h_x_start;
           target_y = h_y_start + target_size*h_counter;
           h_counter++;
+
+          if(!is_frame_h_created){
+            let frame_h = new Frame(h_x_start - (target_size*0.5+10), h_y_start - (target_size*0.5+10), target_size+ 20, (target_size*3)+20, "BH", target_color[0], target_color[1], target_color[2]);
+            frames.push(frame_h);
+            is_frame_h_created = true;
+          }
+
           break;
+
         case 'i':
           target_x = i_x_start + (target_size*1.2)*(i_counter%3);
           if(i_counter%3 == 0 && i_counter != 0){
@@ -301,14 +342,29 @@ function createTargets(target_size, screen_width, screen_height)
           }
           target_y = i_y_start + target_size*i_line;
           i_counter++;
+
+          if(!is_frame_i_created){
+            let frame_i = new Frame(i_x_start - (target_size*0.5+10), i_y_start - (target_size*0.5+10), (target_size + 20)*3, (target_size*3) + 20, "BI", target_color[0], target_color[1], target_color[2]);
+            frames.push(frame_i);
+            is_frame_i_created = true;
+          }
+
           break;
         case 'l':
           target_x = i_x_start + (target_size*1.2)*3.5;
           target_y = i_y_start;
+
+          let frame_l = new Frame(target_x - (target_size*0.5+10), target_y - (target_size*0.5+10), target_size + 20, target_size + 20, "BL", target_color[0], target_color[1], target_color[2]);
+          frames.push(frame_l);
+
           break;
         case 'n':
           target_x = i_x_start + (target_size*1.2)*3.5;
           target_y = i_y_start + target_size*2;
+
+          let frame_n = new Frame(target_x - (target_size*0.5+10), target_y - (target_size*0.5+10), target_size + 20, target_size + 20, "BN", target_color[0], target_color[1], target_color[2]);
+          frames.push(frame_n);
+
           break;
         case 'o':
           target_x = o_x_start + (target_size*1.2)*(o_counter%2);
@@ -317,6 +373,13 @@ function createTargets(target_size, screen_width, screen_height)
           }
           target_y = o_y_start + target_size*o_line;
           o_counter++;
+
+          if(!is_frame_o_created){
+            let frame_o = new Frame(o_x_start - (target_size*0.5+10), o_y_start - (target_size*0.5+10), (target_size + 20)*2, (target_size*2) + 20, "BO", target_color[0], target_color[1], target_color[2]);
+            frames.push(frame_o);
+            is_frame_o_created = true;
+          }
+
           break;
         case 'r':
           target_x = r_x_start + (target_size*1.2)*(r_counter%5);
@@ -325,6 +388,13 @@ function createTargets(target_size, screen_width, screen_height)
           }
           target_y = r_y_start + target_size*r_line;
           r_counter++;
+
+          if(!is_frame_r_created){
+            let frame_r = new Frame(r_x_start - (target_size*0.5+10), r_y_start - (target_size*0.5+10), (target_size + 20)*5 - 10, (target_size*3) + 20, "BR", target_color[0], target_color[1], target_color[2]);
+            frames.push(frame_r);
+            is_frame_r_created = true;
+          }
+
           break;
         case 'u':
           target_x = u_x_start + (target_size*1.2)*(u_counter%5);
@@ -333,13 +403,24 @@ function createTargets(target_size, screen_width, screen_height)
           }
           target_y = u_y_start + target_size*u_line;
           u_counter++;
+          
+          if(!is_frame_u_created){
+            let frame_u = new Frame(u_x_start - (target_size*0.5+10), u_y_start - (target_size*0.5+10), (target_size + 20)*5 - 10, (target_size*2) + 20, "BU", target_color[0], target_color[1], target_color[2]);
+            frames.push(frame_u);
+            is_frame_u_created = true;
+          }
+
           break;
         case 'y':
           target_x = u_x_start + (target_size*1.2)*2;
           target_y = u_y_start + target_size*2.25;
+
+          let frame_y = new Frame(target_x - (target_size*0.5+10), target_y - (target_size*0.5+10), target_size + 20, target_size + 20, "BY", target_color[0], target_color[1], target_color[2]);
+          frames.push(frame_y);
+
           break;
       }
-
+      
       // -----------------------------------------
 
       let target = new Target(target_x, target_y, target_size, target_label, target_id, target_color[0], target_color[1], target_color[2]);
