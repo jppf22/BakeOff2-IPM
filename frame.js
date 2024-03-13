@@ -25,7 +25,7 @@ class Frame
         textFont("Arial", 36);
         fill(color(this.color_r, this.color_g, this.color_b));
         textAlign(TOP); // Align label to top and center
-        text(this.label, this.x + this.width/2, this.y);
+        text(this.label, this.x + this.width/2, this.y - 10);
 
         pop(); // Restore the previous drawing style
     }

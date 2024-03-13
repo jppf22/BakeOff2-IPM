@@ -427,55 +427,6 @@ function createTargets(target_size, screen_width, screen_height)
       console.log(target_label, target_x, target_y, target.id);
       targets.push(target);
   }
-
-  // After iterating, draw the squares containing the grouped targets with a caption specifying the letter group
-
-
-  // Define the margins between targets by dividing the white space 
-  // for the number of targets minus one
-
-  /*
-  h_margin = horizontal_gap / (GRID_COLUMNS -1);
-  v_margin = vertical_gap / (GRID_ROWS - 1);
-  
-  // Set targets in a 8 x 10 grid
-  for (var r = 0; r < GRID_ROWS; r++)
-  {
-    for (var c = 0; c < GRID_COLUMNS; c++)
-    {
-
-      // Find the appropriate label and ID for this target
-      let legendas_index = c + GRID_COLUMNS * r;
-
-      let target_label = legendasArray[legendas_index][1];
-      let target_id = legendasArray[legendas_index][0];
-      let target_color = assignTargetColor(target_label);
-
-      // Assuming 'legendas' is a p5.Table object
-      let legendasArray = legendas.getArray();
-      
-      // Sort the array based on the second column (index 1)
-      legendasArray.sort((a, b) => a[1].localeCompare(b[1]));
-      console.log(legendasArray);
-      
-      // Calculate the x and y position for each target
-      // These values focus on clustering the targets more, so that they are closer to the center of the screen
-      let target_x = 220 + (h_margin + (target_size/2))*c + target_size/2;
-      let target_y = 10 + (v_margin + target_size*0.80)*r + target_size;
-
-
-      
-
-
-      
-      let target = new Target(target_x, target_y, target_size, target_label, target_id, target_color[0], target_color[1], target_color[2]);
-
-      console.log(target_label, target_x, target_y, target.id);
-
-      targets.push(target);
-    }  
-  }
-  */
 }
 
 // Is invoked when the canvas is resized (e.g., when we go fullscreen)
@@ -494,7 +445,7 @@ function windowResized()
     // Below we find out out white space we can have between 2 cm targets
     let screen_width   = display.width * 2.54;             // screen width
     let screen_height  = display.height * 2.54;            // screen height
-    let target_size    = 2;                                // sets the target size (will be converted to cm when passed to createTargets)
+    let target_size    = 2.04;                                // sets the target size (will be converted to cm when passed to createTargets)
 
     /*
 
@@ -525,9 +476,9 @@ function assignTargetColor(target_label){
 
   switch(target_label[1]){
     case "a":
-      color_r = 169;
-      color_g = 169;
-      color_b = 169; // Dark Gray
+      color_r = 128;
+      color_g = 128;
+      color_b = 128; // Dark Gray
       break;
     case "e":
       color_r = 0;
@@ -555,9 +506,9 @@ function assignTargetColor(target_label){
       color_b = 0; // Bright Orange
       break;
     case "o":
-      color_r = 173;
-      color_g = 216;
-      color_b = 230; // Light Blue
+      color_r = 92;
+      color_g = 119;
+      color_b = 130; // Dark Blue
       break;
     case "r":
       color_r = 32;
@@ -565,9 +516,9 @@ function assignTargetColor(target_label){
       color_b = 170; // Seafoam Green
       break;
     case "u":
-      color_r = 192;
-      color_g = 192;
-      color_b = 192; // Silver
+      color_r = 139;
+      color_g = 69;
+      color_b = 19; // Brown
       break;
     case "y":
       color_r = 154;
