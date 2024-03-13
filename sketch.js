@@ -65,6 +65,7 @@ function setup()
 // Runs every frame and redraws the screen
 function draw()
 {
+
   if (draw_targets && attempt < 2)
   {     
     // The user is interacting with the 6x3 target grid
@@ -76,27 +77,43 @@ function draw()
     textAlign(LEFT);
     text("Trial " + (current_trial + 1) + " of " + trials.length, 50, 20);
   
+  
 
-    // Draw all targets
-	for (var i = 0; i < legendas.getRowCount(); i++) targets[i].draw();
-    
-    // Draws the target label to be selected in the current trial. We include 
-    // a black rectangle behind the trial label for optimal contrast in case 
-    // you change the background colour of the sketch (DO NOT CHANGE THESE!)
-    fill(color(0,0,0));
-    rect(0, height - 40, width, 40);
- 
-    textFont("Arial", 20); 
-    fill(color(255,255,255)); 
-    textAlign(CENTER); 
-    text(legendas.getString(trials[current_trial],1), width/2, height - 20);
+    for (var i = 0; i < frames.length; i++) {
+      if (frames[i].hovered(mouseX, mouseY)) {
+        frames[i].hover();
+      } else {
+        frames[i].stopHover();
+      }
+    }
+
+      // Draw all targets
+    for (var i = 0; i < legendas.getRowCount(); i++){
+      targets[i].draw();
+
+      if (targets[i].clicked(mouseX, mouseY)) {
+        targets[i].hover();
+      }
+    }
+      
+      // Draws the target label to be selected in the current trial. We include 
+      // a black rectangle behind the trial label for optimal contrast in case 
+      // you change the background colour of the sketch (DO NOT CHANGE THESE!)
+      fill(color(0,0,0));
+      rect(0, height - 40, width, 40);
+  
+      textFont("Arial", 20); 
+      fill(color(255,255,255)); 
+      textAlign(CENTER); 
+      text(legendas.getString(trials[current_trial],1), width/2, height - 20);
   }
 
-
+  /*
   if (draw_targets && attempt < 2){
     // Draws the frames
     for (var i = 0; i < frames.length; i++) frames[i].draw();
   }
+  */
 }
 
 // Print and save results at the end of 54 trials
@@ -156,6 +173,9 @@ function printAndSavePerformance()
   }
 }
 
+
+
+
 // Mouse button was pressed - lets test to see if hit was in the correct target
 function mousePressed() 
 {
@@ -203,6 +223,7 @@ function mousePressed()
     else if (current_trial === 1) testStartTime = millis(); 
   }
 }
+
 
 // Evoked after the user starts its second (and last) attempt
 function continueTest()
@@ -293,7 +314,7 @@ function createTargets(target_size, screen_width, screen_height)
           a_counter++;
 
           if(!is_frame_a_created){
-            let frame_a = new Frame(a_x_start - (target_size*0.5+10), a_y_start - (target_size*0.5+10), (target_size + 20)*6 - 10, (target_size*5) + 20, "BA", target_color[0], target_color[1], target_color[2]);
+            let frame_a = new Frame(a_x_start - (target_size*0.5+10), a_y_start - (target_size*0.5+10), (target_size + 20)*6 - 10, (target_size*5) + 20, "BA", 0 , target_color[0], target_color[1], target_color[2]);
             frames.push(frame_a);
             is_frame_a_created = true;
           }
@@ -303,7 +324,7 @@ function createTargets(target_size, screen_width, screen_height)
           target_x = e_x_start + (target_size*1.2)*5;
           target_y = e_y_start + target_size*0.5;
 
-          let frame_é = new Frame(target_x - (target_size*0.5+10), target_y - (target_size*0.5+10), target_size + 20, target_size + 20, "BÉ", target_color[0], target_color[1], target_color[2]);
+          let frame_é = new Frame(target_x - (target_size*0.5+10), target_y - (target_size*0.5+10), target_size + 20, target_size + 20, "BÉ", 0, target_color[0], target_color[1], target_color[2]);
           frames.push(frame_é);
 
           break;
@@ -316,7 +337,7 @@ function createTargets(target_size, screen_width, screen_height)
           e_counter++;
 
           if(!is_frame_e_created){
-            let frame_e = new Frame(e_x_start - (target_size*0.5+10), e_y_start - (target_size*0.5+10), (target_size + 20)*5 - 10, (target_size*2) + 20, "BE", target_color[0], target_color[1], target_color[2]);
+            let frame_e = new Frame(e_x_start - (target_size*0.5+10), e_y_start - (target_size*0.5+10), (target_size + 20)*5 - 10, (target_size*2) + 20, "BE", 0, target_color[0], target_color[1], target_color[2]);
             frames.push(frame_e);
             is_frame_e_created = true;
           }
@@ -328,7 +349,7 @@ function createTargets(target_size, screen_width, screen_height)
           h_counter++;
 
           if(!is_frame_h_created){
-            let frame_h = new Frame(h_x_start - (target_size*0.5+10), h_y_start - (target_size*0.5+10), target_size+ 20, (target_size*3)+20, "BH", target_color[0], target_color[1], target_color[2]);
+            let frame_h = new Frame(h_x_start - (target_size*0.5+10), h_y_start - (target_size*0.5+10), target_size+ 20, (target_size*3)+20, "BH", 2 , target_color[0], target_color[1], target_color[2]);
             frames.push(frame_h);
             is_frame_h_created = true;
           }
@@ -344,7 +365,7 @@ function createTargets(target_size, screen_width, screen_height)
           i_counter++;
 
           if(!is_frame_i_created){
-            let frame_i = new Frame(i_x_start - (target_size*0.5+10), i_y_start - (target_size*0.5+10), (target_size + 20)*3, (target_size*3) + 20, "BI", target_color[0], target_color[1], target_color[2]);
+            let frame_i = new Frame(i_x_start - (target_size*0.5+10), i_y_start - (target_size*0.5+10), (target_size + 20)*3, (target_size*3) + 20, "BI", 0, target_color[0], target_color[1], target_color[2]);
             frames.push(frame_i);
             is_frame_i_created = true;
           }
@@ -354,7 +375,7 @@ function createTargets(target_size, screen_width, screen_height)
           target_x = i_x_start + (target_size*1.2)*3.5;
           target_y = i_y_start;
 
-          let frame_l = new Frame(target_x - (target_size*0.5+10), target_y - (target_size*0.5+10), target_size + 20, target_size + 20, "BL", target_color[0], target_color[1], target_color[2]);
+          let frame_l = new Frame(target_x - (target_size*0.5+10), target_y - (target_size*0.5+10), target_size + 20, target_size + 20, "BL", 0, target_color[0], target_color[1], target_color[2]);
           frames.push(frame_l);
 
           break;
@@ -362,7 +383,7 @@ function createTargets(target_size, screen_width, screen_height)
           target_x = i_x_start + (target_size*1.2)*3.5;
           target_y = i_y_start + target_size*2;
 
-          let frame_n = new Frame(target_x - (target_size*0.5+10), target_y - (target_size*0.5+10), target_size + 20, target_size + 20, "BN", target_color[0], target_color[1], target_color[2]);
+          let frame_n = new Frame(target_x - (target_size*0.5+10), target_y - (target_size*0.5+10), target_size + 20, target_size + 20, "BN", 0, target_color[0], target_color[1], target_color[2]);
           frames.push(frame_n);
 
           break;
@@ -375,7 +396,7 @@ function createTargets(target_size, screen_width, screen_height)
           o_counter++;
 
           if(!is_frame_o_created){
-            let frame_o = new Frame(o_x_start - (target_size*0.5+10), o_y_start - (target_size*0.5+10), (target_size + 20)*2, (target_size*2) + 20, "BO", target_color[0], target_color[1], target_color[2]);
+            let frame_o = new Frame(o_x_start - (target_size*0.5+10), o_y_start - (target_size*0.5+10), (target_size + 20)*2, (target_size*2) + 20, "BO", 0, target_color[0], target_color[1], target_color[2]);
             frames.push(frame_o);
             is_frame_o_created = true;
           }
@@ -390,7 +411,7 @@ function createTargets(target_size, screen_width, screen_height)
           r_counter++;
 
           if(!is_frame_r_created){
-            let frame_r = new Frame(r_x_start - (target_size*0.5+10), r_y_start - (target_size*0.5+10), (target_size + 20)*5 - 10, (target_size*3) + 20, "BR", target_color[0], target_color[1], target_color[2]);
+            let frame_r = new Frame(r_x_start - (target_size*0.5+10), r_y_start - (target_size*0.5+10), (target_size + 20)*5 - 10, (target_size*3) + 20, "BR", 0, target_color[0], target_color[1], target_color[2]);
             frames.push(frame_r);
             is_frame_r_created = true;
           }
@@ -405,7 +426,7 @@ function createTargets(target_size, screen_width, screen_height)
           u_counter++;
           
           if(!is_frame_u_created){
-            let frame_u = new Frame(u_x_start - (target_size*0.5+10), u_y_start - (target_size*0.5+10), (target_size + 20)*5 - 10, (target_size*2) + 20, "BU", target_color[0], target_color[1], target_color[2]);
+            let frame_u = new Frame(u_x_start - (target_size*0.5+10), u_y_start - (target_size*0.5+10), (target_size + 20)*5 - 10, (target_size*2) + 20, "BU", 0, target_color[0], target_color[1], target_color[2]);
             frames.push(frame_u);
             is_frame_u_created = true;
           }
@@ -415,7 +436,7 @@ function createTargets(target_size, screen_width, screen_height)
           target_x = u_x_start + (target_size*1.2)*2;
           target_y = u_y_start + target_size*2.25;
 
-          let frame_y = new Frame(target_x - (target_size*0.5+10), target_y - (target_size*0.5+10), target_size + 20, target_size + 20, "BY", target_color[0], target_color[1], target_color[2]);
+          let frame_y = new Frame(target_x - (target_size*0.5+10), target_y - (target_size*0.5+10), target_size + 20, target_size + 20, "BY", 2 , target_color[0], target_color[1], target_color[2]);
           frames.push(frame_y);
 
           break;
