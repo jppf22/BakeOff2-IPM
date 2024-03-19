@@ -251,6 +251,9 @@ function createTargets(target_size, screen_width, screen_height)
   let frame_offset_x = screen_width*0.005; 
   let frame_offset_y = screen_width*0.005;
 
+  // frame_horizonta_gap
+  // frame_vertical_gap
+
   let a_counter = 0;
   let a_line = 0;
   let is_frame_a_created = false;
@@ -479,7 +482,7 @@ function windowResized()
     // Below we find out out white space we can have between 2 cm targets
     let screen_width   = display.width * 2.54;             // screen width
     let screen_height  = display.height * 2.54;            // screen height
-    let target_size    = 2.04;                                // sets the target size (will be converted to cm when passed to createTargets)
+    let target_size    = 1.8;                                // sets the target size (will be converted to cm when passed to createTargets)
 
     /*
 
