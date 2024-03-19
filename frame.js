@@ -53,7 +53,7 @@ class Frame {
 
         if (this.label_pos === 0) text(this.label, this.x + this.width / 2, this.y - 10); // Adjust the y-coordinate to display the label above the frame
         else if(this.label_pos === 1) text(this.label, this.x + this.width / 2, this.y + this.height + 40); // Adjust the y-coordinate to display the label below the frame
-        else if(this.label_pos === 2) text(this.label, this.x - 20, this.y + this.height / 2); // Adjust the x-coordinate to display the label to the left of the frame
-        else if(this.label_pos === 3) text(this.label, this.x + this.width + 10, this.y + this.height / 2); // Adjust the x-coordinate to display the label to the right of the frame
+        else if(this.label_pos === 2) text(this.label, this.x - this.width*0.28, this.y + this.height / 2); // Adjust the x-coordinate to display the label to the left of the frame
+        else if(this.label_pos === 3) text(this.label, this.x + this.width + this.width*0.28 , this.y + this.height / 2); // Adjust the x-coordinate to display the label to the right of the frame
     }
 }
