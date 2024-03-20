@@ -14,10 +14,41 @@ class Frame {
 
     hovered(mouse_x, mouse_y) {
         return (
-            mouse_x > this.x &&
-            mouse_x < this.x + this.width &&
-            mouse_y > this.y &&
-            mouse_y < this.y + this.height
+            (
+
+                mouse_x > this.x &&
+                mouse_x < this.x + this.width &&
+                mouse_y > this.y &&
+                mouse_y < this.y + this.height
+            )
+            ||
+            (
+                mouse_x-45 > this.x &&
+                mouse_x-45 < this.x + this.width &&
+                mouse_y-45 > this.y &&
+                mouse_y-45 < this.y + this.height
+            )
+            ||
+            (
+                mouse_x+45 > this.x &&
+                mouse_x+45 < this.x + this.width &&
+                mouse_y+45 > this.y &&
+                mouse_y+45 < this.y + this.height
+            )
+            ||
+            (
+                mouse_x-45 > this.x &&
+                mouse_x-45 < this.x + this.width &&
+                mouse_y+45 > this.y &&
+                mouse_y+45 < this.y + this.height
+            )
+            ||
+            (
+                mouse_x+45 > this.x &&
+                mouse_x+45 < this.x + this.width &&
+                mouse_y-45 > this.y &&
+                mouse_y-45 < this.y + this.height
+            )
         );
     }
 

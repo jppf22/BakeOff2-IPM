@@ -68,9 +68,12 @@ function setup()
 // Runs every frame and redraws the screen
 function draw()
 {
-
   if (draw_targets && attempt < 2)
   {     
+    // Set cursor to a circle with around 1 cm of diameter
+    cursor('Cursor_Test.png',45,45);
+    //cursor(10);
+
     // The user is interacting with the 6x3 target grid
     background(color(0,0,0));        // sets background to black
     
@@ -80,7 +83,6 @@ function draw()
     textAlign(LEFT);
     text("Trial " + (current_trial + 1) + " of " + trials.length, 50, 20);
   
-
     for (var i = 0; i < frames.length; i++) {
       var targets_arr = frames[i].get_target_arr();
       if (frames[i].hovered(mouseX, mouseY)) {
@@ -96,33 +98,33 @@ function draw()
       }
     }
 
-      // Draw all targets
-    for (var i = 0; i < legendas.getRowCount(); i++){
+    // Find the target closest to the cursor
+    let closestTarget = null;
+    let closestDistance = Infinity;
+    for (var i = 0; i < legendas.getRowCount(); i++) {
       targets[i].draw();
-
-      if (targets[i].clicked(mouseX, mouseY)) {
-        targets[i].hover();
+      let distance = dist(mouseX, mouseY, targets[i].x, targets[i].y);
+      if (distance < closestDistance) {
+      closestTarget = targets[i];
+      closestDistance = distance;
       }
     }
-      
-      // Draws the target label to be selected in the current trial. We include 
-      // a black rectangle behind the trial label for optimal contrast in case 
-      // you change the background colour of the sketch (DO NOT CHANGE THESE!)
-      fill(color(0,0,0));
-      rect(0, height - 40, width, 40);
-  
-      textFont("Arial", 20); 
-      fill(color(255,255,255)); 
-      textAlign(CENTER); 
-      text(legendas.getString(trials[current_trial],1), width/2, height - 20);
-  }
 
-  /*
-  if (draw_targets && attempt < 2){
-    // Draws the frames
-    for (var i = 0; i < frames.length; i++) frames[i].draw();
+    if(closestTarget){
+      closestTarget.hover();
+    }
+      
+    // Draws the target label to be selected in the current trial. We include 
+    // a black rectangle behind the trial label for optimal contrast in case 
+    // you change the background colour of the sketch (DO NOT CHANGE THESE!)
+    fill(color(0,0,0));
+    rect(0, height - 40, width, 40);
+
+    textFont("Arial", 20); 
+    fill(color(255,255,255)); 
+    textAlign(CENTER); 
+    text(legendas.getString(trials[current_trial],1), width/2, height - 20);
   }
-  */
 }
 
 // Print and save results at the end of 54 trials
@@ -189,24 +191,37 @@ function mousePressed()
   // (i.e., during target selections)
   if (draw_targets)
   {
+    let closestTarget = null;
+    let closestDistance = Infinity;
+
     for (var i = 0; i < legendas.getRowCount(); i++)
     {
       // Check if the user clicked over one of the targets
       console.log(targets[i].x, targets[i].y, mouseX, mouseY, targets[i].label);
       if (targets[i].clicked(mouseX, mouseY))
       {
-        // Checks if it was the correct target
-        console.log(targets[i].label, targets[i].id, trials[current_trial] + 1);
+      // Calculate the distance between the target and the cursor
+      let distance = dist(targets[i].x, targets[i].y, mouseX, mouseY);
 
-        if (targets[i].id == trials[current_trial] + 1) {
-          hits++;
-          console.log(hits);
-        }
-        else misses++;
-        
-        current_trial++;              // Move on to the next trial/target
-        break;
+      // Check if this target is closer than the previous closest target
+      if (distance < closestDistance) {
+        closestTarget = targets[i];
+        closestDistance = distance;
       }
+      }
+    }
+
+    if (closestTarget) {
+      // Checks if it was the correct target
+      console.log(closestTarget.label, closestTarget.id, trials[current_trial] + 1);
+
+      if (closestTarget.id == trials[current_trial] + 1) {
+      hits++;
+      console.log(hits);
+      }
+      else misses++;
+
+      current_trial++;              // Move on to the next trial/target
     }
     
     // Check if the user has completed all trials
