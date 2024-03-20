@@ -101,6 +101,7 @@ function startTest()
     display_size_label.remove();
     start_button.remove();  
     additional_text.remove();
+    text2.remove();
 
     // Goes fullscreen and starts test
     fullscreen(!fullscreen());

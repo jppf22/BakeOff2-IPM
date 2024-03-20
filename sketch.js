@@ -465,7 +465,7 @@ function createTargets(target_size, screen_width, screen_height)
 
       let target = new Target(target_x, target_y, target_size, target_label, target_id, target_color[0], target_color[1], target_color[2]);
       console.log(target_label, target_x, target_y, target.id);
-      //targets.push(target);
+      targets.push(target);
   }
 }
 
