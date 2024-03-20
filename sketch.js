@@ -44,18 +44,21 @@ const ELEMENTS_Y          =  1;
 
 let frames                = [];
 const N_FRAMES            = 10;     // number of frames to be drawn   
+let img;
+
 
 // Ensures important data is loaded before the program starts
 function preload()
 {
   // id,name,...
+  img = loadImage('bakeoff2.jpg');
   legendas = loadTable('legendas.csv', 'csv', 'header');
 }
 
 // Runs once at the start
 function setup()
 {
-  createCanvas(700, 500);    // window size in px before we go into fullScreen()
+  createCanvas(720, 720);    // window size in px before we go into fullScreen()
   frameRate(60);             // frame rate (DO NOT CHANGE!)
   
   randomizeTrials();         // randomize the trial order at the start of execution
@@ -462,7 +465,7 @@ function createTargets(target_size, screen_width, screen_height)
 
       let target = new Target(target_x, target_y, target_size, target_label, target_id, target_color[0], target_color[1], target_color[2]);
       console.log(target_label, target_x, target_y, target.id);
-      targets.push(target);
+      //targets.push(target);
   }
 }
 
