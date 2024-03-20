@@ -58,7 +58,7 @@ function preload()
 // Runs once at the start
 function setup()
 {
-  createCanvas(720, 720);    // window size in px before we go into fullScreen()
+  createCanvas(720, 600);    // window size in px before we go into fullScreen()
   frameRate(60);             // frame rate (DO NOT CHANGE!)
   
   randomizeTrials();         // randomize the trial order at the start of execution

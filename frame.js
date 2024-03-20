@@ -9,6 +9,7 @@ class Frame {
         this.color_r = color_r;
         this.color_g = color_g;
         this.color_b = color_b;
+        this.targetArray = [];
     }
 
     hovered(mouse_x, mouse_y) {

@@ -41,22 +41,22 @@ function drawUserIDScreen() {
   // 3. Start button
   start_button = createButton('START');
   start_button.mouseReleased(startTest);
-  start_button.position(width/6 - start_button.size().width/2, height/4 - start_button.size().height/2);
+  start_button.position(width/5 - start_button.size().width/2, height/4 - start_button.size().height/2);
 
   // Additional text
   additional_text = createP("<b>Como jogar:</b><br><br><li> Identifique o grupo ao qual pertence o alvo, de acordo com as duas primeiras letras;</li><br><li> Dentro de cada grupo, o nome dos alvos está ordenado alfabeticamente;</li><br><li> Clique no alvo pedido.</li>");
   additional_text.style('color', 'white'); // Set text color to white
-  additional_text.position(10, height - 480); // Position the text element
+  additional_text.position(10, height - 450); // Position the text element
   additional_text.style('font-family', 'Arial'); // Set font to Arial
 
 
   text2 = createP("<b>Disposição dos alvos </b>");
   text2.style('color', 'white'); // Set text color to white
-  text2.position(250, additional_text.position().y + 130); // Position the text element
+  text2.position(250, additional_text.position().y + 110); // Position the text element
   text2.style('font-family', 'Arial'); // Set font to Arial
 
 
-  image(img, 90, additional_text.position().y + 140, 192*3, 108*3);
+  image(img, 90, additional_text.position().y + 120, 192*3, 108*3);
 
 
 }
