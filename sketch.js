@@ -80,13 +80,19 @@ function draw()
     textAlign(LEFT);
     text("Trial " + (current_trial + 1) + " of " + trials.length, 50, 20);
   
-  
 
     for (var i = 0; i < frames.length; i++) {
+      var targets_arr = frames[i].get_target_arr();
       if (frames[i].hovered(mouseX, mouseY)) {
         frames[i].hover();
+        for(var j = 0; j < targets_arr.length; j++){
+          targets[targets_arr[j]].is_cursor_on_frame = true;
+        }
       } else {
         frames[i].stopHover();
+        for(var j = 0; j < targets_arr.length; j++){
+          targets[targets_arr[j]].is_cursor_on_frame = false;
+        }
       }
     }
 
@@ -321,7 +327,8 @@ function createTargets(target_size, screen_width, screen_height)
       let target_label = legendasArray[legendas_index][1];
       let target_id = legendasArray[legendas_index][0];
       let target_color = assignTargetColor(target_label);
-      
+      let frame_targets = [];
+
       // NEW CODE --------------------------------
       switch(target_label[1]){
         case 'a':
@@ -333,7 +340,10 @@ function createTargets(target_size, screen_width, screen_height)
           a_counter++;
 
           if(!is_frame_a_created){
-            let frame_a = new Frame(a_x_start - target_size*0.5 - frame_offset_x, a_y_start - target_size*0.5 - frame_offset_y, (target_size + target_gap)*6 - target_gap + frame_offset_x*2, (target_size*5) + frame_offset_y*2, "BA", 0 , target_color[0], target_color[1], target_color[2]); //
+            for(var i=legendas_index; i < legendas_index+ELEMENTS_A; i++){
+              frame_targets.push(i);
+            }
+            let frame_a = new Frame(a_x_start - target_size*0.5 - frame_offset_x, a_y_start - target_size*0.5 - frame_offset_y, (target_size + target_gap)*6 - target_gap + frame_offset_x*2, (target_size*5) + frame_offset_y*2, "BA", 0 , target_color[0], target_color[1], target_color[2], frame_targets); //
             frames.push(frame_a);
             is_frame_a_created = true;
           }
@@ -343,7 +353,11 @@ function createTargets(target_size, screen_width, screen_height)
           target_x = é_x_start;
           target_y = é_y_start;
 
-          let frame_é = new Frame(target_x - target_size*0.5 - frame_offset_x, target_y - target_size*0.5 - frame_offset_y, target_size + frame_offset_x*2, target_size + frame_offset_y*2, "BÉ", 0, target_color[0], target_color[1], target_color[2]); //
+          for(var i=legendas_index; i < legendas_index+ELEMENTS_É; i++){
+            frame_targets.push(i);
+          }
+
+          let frame_é = new Frame(target_x - target_size*0.5 - frame_offset_x, target_y - target_size*0.5 - frame_offset_y, target_size + frame_offset_x*2, target_size + frame_offset_y*2, "BÉ", 0, target_color[0], target_color[1], target_color[2], frame_targets); //
           frames.push(frame_é);
 
           break;
@@ -355,8 +369,12 @@ function createTargets(target_size, screen_width, screen_height)
           target_y = e_y_start + target_size*e_line;
           e_counter++;
 
+          for(var i=legendas_index; i < legendas_index+ELEMENTS_E; i++){
+            frame_targets.push(i);
+          }
+
           if(!is_frame_e_created){
-            let frame_e = new Frame(e_x_start - target_size*0.5 - frame_offset_x, e_y_start - target_size*0.5 - frame_offset_y, (target_size + target_gap)*5 - target_gap + frame_offset_x*2, (target_size*2) + frame_offset_y*2, "BE", 0, target_color[0], target_color[1], target_color[2]); //
+            let frame_e = new Frame(e_x_start - target_size*0.5 - frame_offset_x, e_y_start - target_size*0.5 - frame_offset_y, (target_size + target_gap)*5 - target_gap + frame_offset_x*2, (target_size*2) + frame_offset_y*2, "BE", 0, target_color[0], target_color[1], target_color[2], frame_targets); //
             frames.push(frame_e);
             is_frame_e_created = true;
           }
@@ -367,8 +385,12 @@ function createTargets(target_size, screen_width, screen_height)
           target_y = h_y_start + target_size*h_counter;
           h_counter++;
 
+          for(var i=legendas_index; i < legendas_index+ELEMENTS_H; i++){
+            frame_targets.push(i);
+          }
+
           if(!is_frame_h_created){
-            let frame_h = new Frame(h_x_start - target_size*0.5 - frame_offset_x, h_y_start - target_size*0.5 - frame_offset_y, target_size + frame_offset_x*2, (target_size*3)+frame_offset_y*2, "BH", 2 , target_color[0], target_color[1], target_color[2]); //
+            let frame_h = new Frame(h_x_start - target_size*0.5 - frame_offset_x, h_y_start - target_size*0.5 - frame_offset_y, target_size + frame_offset_x*2, (target_size*3)+frame_offset_y*2, "BH", 2 , target_color[0], target_color[1], target_color[2], frame_targets); //
             frames.push(frame_h);
             is_frame_h_created = true;
           }
@@ -382,9 +404,13 @@ function createTargets(target_size, screen_width, screen_height)
           }
           target_y = i_y_start + target_size*i_line;
           i_counter++;
+          
+          for(var i=legendas_index; i < legendas_index+ELEMENTS_I; i++){
+            frame_targets.push(i);
+          }
 
           if(!is_frame_i_created){
-            let frame_i = new Frame(i_x_start - target_size*0.5 - frame_offset_x, i_y_start - target_size*0.5 - frame_offset_y, (target_size + target_gap)*3 - target_gap + frame_offset_x*2, (target_size*3) + frame_offset_y*2, "BI", 1, target_color[0], target_color[1], target_color[2]); //
+            let frame_i = new Frame(i_x_start - target_size*0.5 - frame_offset_x, i_y_start - target_size*0.5 - frame_offset_y, (target_size + target_gap)*3 - target_gap + frame_offset_x*2, (target_size*3) + frame_offset_y*2, "BI", 1, target_color[0], target_color[1], target_color[2], frame_targets); //
             frames.push(frame_i);
             is_frame_i_created = true;
           }
@@ -394,15 +420,23 @@ function createTargets(target_size, screen_width, screen_height)
           target_x = l_x_start;
           target_y = l_y_start;
 
-          let frame_l = new Frame(target_x - target_size*0.5 - frame_offset_x, target_y - target_size*0.5 - frame_offset_y, target_size + frame_offset_x*2, target_size + frame_offset_y*2, "BL", 0, target_color[0], target_color[1], target_color[2]); //
+          for(var i=legendas_index; i < legendas_index+ELEMENTS_L; i++){
+            frame_targets.push(i);
+          }
+
+          let frame_l = new Frame(target_x - target_size*0.5 - frame_offset_x, target_y - target_size*0.5 - frame_offset_y, target_size + frame_offset_x*2, target_size + frame_offset_y*2, "BL", 0, target_color[0], target_color[1], target_color[2], frame_targets); //
           frames.push(frame_l);
 
           break;
         case 'n':
           target_x = n_x_start;
           target_y = n_y_start;
+          
+          for(var i=legendas_index; i < legendas_index+ELEMENTS_N; i++){
+            frame_targets.push(i);
+          }
 
-          let frame_n = new Frame(target_x - target_size*0.5 - frame_offset_x, target_y - target_size*0.5 - frame_offset_y, target_size + frame_offset_x*2, target_size + frame_offset_y*2, "BN", 0, target_color[0], target_color[1], target_color[2]); //
+          let frame_n = new Frame(target_x - target_size*0.5 - frame_offset_x, target_y - target_size*0.5 - frame_offset_y, target_size + frame_offset_x*2, target_size + frame_offset_y*2, "BN", 0, target_color[0], target_color[1], target_color[2], frame_targets); //
           frames.push(frame_n);
 
           break;
@@ -414,8 +448,12 @@ function createTargets(target_size, screen_width, screen_height)
           target_y = o_y_start + target_size*o_line;
           o_counter++;
 
+          for(var i=legendas_index; i < legendas_index+ELEMENTS_O; i++){
+            frame_targets.push(i);
+          }
+
           if(!is_frame_o_created){
-            let frame_o = new Frame(o_x_start - target_size*0.5 - frame_offset_x, o_y_start - target_size*0.5 - frame_offset_y, (target_size + target_gap)*2 - target_gap + frame_offset_x*2, (target_size*2) + frame_offset_y*2, "BO", 0, target_color[0], target_color[1], target_color[2]); //
+            let frame_o = new Frame(o_x_start - target_size*0.5 - frame_offset_x, o_y_start - target_size*0.5 - frame_offset_y, (target_size + target_gap)*2 - target_gap + frame_offset_x*2, (target_size*2) + frame_offset_y*2, "BO", 0, target_color[0], target_color[1], target_color[2], frame_targets); //
             frames.push(frame_o);
             is_frame_o_created = true;
           }
@@ -429,8 +467,12 @@ function createTargets(target_size, screen_width, screen_height)
           target_y = r_y_start + target_size*r_line;
           r_counter++;
 
+          for(var i=legendas_index; i < legendas_index+ELEMENTS_R; i++){
+            frame_targets.push(i);
+          }
+
           if(!is_frame_r_created){
-            let frame_r = new Frame(r_x_start - target_size*0.5 - frame_offset_x, r_y_start - target_size*0.5 - frame_offset_y, (target_size + target_gap)*5 - target_gap + frame_offset_x*2, (target_size*3) + frame_offset_y*2, "BR", 0, target_color[0], target_color[1], target_color[2]); //
+            let frame_r = new Frame(r_x_start - target_size*0.5 - frame_offset_x, r_y_start - target_size*0.5 - frame_offset_y, (target_size + target_gap)*5 - target_gap + frame_offset_x*2, (target_size*3) + frame_offset_y*2, "BR", 0, target_color[0], target_color[1], target_color[2], frame_targets); //
             frames.push(frame_r);
             is_frame_r_created = true;
           }
@@ -443,9 +485,13 @@ function createTargets(target_size, screen_width, screen_height)
           }
           target_y = u_y_start + target_size*u_line;
           u_counter++;
-          
+
+          for(var i=legendas_index; i < legendas_index+ELEMENTS_U; i++){
+            frame_targets.push(i);
+          }
+
           if(!is_frame_u_created){
-            let frame_u = new Frame(u_x_start - target_size*0.5 - frame_offset_x, u_y_start - target_size*0.5 - frame_offset_y, (target_size + target_gap)*5 - target_gap + frame_offset_x*2, (target_size*2) + frame_offset_y*2, "BU", 0, target_color[0], target_color[1], target_color[2]); //
+            let frame_u = new Frame(u_x_start - target_size*0.5 - frame_offset_x, u_y_start - target_size*0.5 - frame_offset_y, (target_size + target_gap)*5 - target_gap + frame_offset_x*2, (target_size*2) + frame_offset_y*2, "BU", 0, target_color[0], target_color[1], target_color[2], frame_targets); //
             frames.push(frame_u);
             is_frame_u_created = true;
           }
@@ -455,12 +501,15 @@ function createTargets(target_size, screen_width, screen_height)
           target_x = y_x_start;
           target_y = y_y_start;
 
-          let frame_y = new Frame(target_x - target_size*0.5 - frame_offset_x, target_y - target_size*0.5 - frame_offset_y, target_size + frame_offset_x*2, target_size + frame_offset_y*2, "BY", 0 , target_color[0], target_color[1], target_color[2]); //
+          for(var i=legendas_index; i < legendas_index+ELEMENTS_Y; i++){
+            frame_targets.push(i);
+          }
+
+          let frame_y = new Frame(target_x - target_size*0.5 - frame_offset_x, target_y - target_size*0.5 - frame_offset_y, target_size + frame_offset_x*2, target_size + frame_offset_y*2, "BY", 0 , target_color[0], target_color[1], target_color[2], frame_targets); //
           frames.push(frame_y);
 
           break;
       }
-      
       // -----------------------------------------
 
       let target = new Target(target_x, target_y, target_size, target_label, target_id, target_color[0], target_color[1], target_color[2]);

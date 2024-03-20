@@ -1,5 +1,5 @@
 class Frame {
-    constructor(x, y, w, h, label, label_pos, color_r, color_g, color_b) {
+    constructor(x, y, w, h, label, label_pos, color_r, color_g, color_b, targets_arr) {
         this.x = x;
         this.y = y;
         this.width = w;
@@ -9,7 +9,7 @@ class Frame {
         this.color_r = color_r;
         this.color_g = color_g;
         this.color_b = color_b;
-        this.targetArray = [];
+        this.targets_arr = targets_arr;
     }
 
     hovered(mouse_x, mouse_y) {
@@ -56,5 +56,9 @@ class Frame {
         else if(this.label_pos === 1) text(this.label, this.x + this.width / 2, this.y + this.height + 40); // Adjust the y-coordinate to display the label below the frame
         else if(this.label_pos === 2) text(this.label, this.x - this.width*0.28, this.y + this.height / 2); // Adjust the x-coordinate to display the label to the left of the frame
         else if(this.label_pos === 3) text(this.label, this.x + this.width + this.width*0.28 , this.y + this.height / 2); // Adjust the x-coordinate to display the label to the right of the frame
+    }
+
+    get_target_arr() {
+        return this.targets_arr;
     }
 }

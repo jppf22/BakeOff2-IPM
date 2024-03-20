@@ -11,6 +11,7 @@ class Target
     this.color_r = color_r;
     this.color_g = color_g;
     this.color_b = color_b;
+    this.is_cursor_on_frame = false;
   }
   
   // Checks if a mouse click took place
@@ -32,8 +33,21 @@ class Target
     // Draw label
     textFont("Arial", 14); // Original value was 12
     fill(color(255,255,255));
-    textAlign(CENTER);
-    text(this.label, this.x, this.y);
+    if (this.is_cursor_on_frame) {
+      textFont("Arial", 18); // Original value was 12
+      textAlign(RIGHT);
+      fill(color(255, 255, 0)); // Yellow color
+      const remainingChars = this.label.length - 3;
+      const xOffset = remainingChars * 2;
+      text(this.label.substring(0, 3), this.x - xOffset, this.y);
+      textFont("Arial", 14); // Original value was 12
+      textAlign(LEFT);
+      fill(color(255, 255, 255)); // White color
+      text(this.label.substring(3), this.x - xOffset, this.y);
+    } else {
+      textAlign(CENTER);
+      text(this.label, this.x, this.y);
+    }
   }
 
 
@@ -41,18 +55,26 @@ class Target
     push(); // Save the current drawing style
 
     fill(color(this.color_r * 0.5, this.color_g * 0.5, this.color_b * 0.5));
-    /*
-    stroke(color(this.color_r-50, this.color_g-50, this.color_b-50));
-    strokeWeight(2); // Add outline thickness
-    */
     circle(this.x, this.y, this.width);
     
     // Draw label
-    textFont("Arial", 14); // Original value was 12
     noStroke(); // Remove stroke for the text
     fill(color(255,255,255));
-    textAlign(CENTER);
-    text(this.label, this.x, this.y);
+    if (this.is_cursor_on_frame) {
+      textFont("Arial", 18); // Original value was 12
+      textAlign(RIGHT);
+      fill(color(255, 255, 0)); // Yellow color
+      const remainingChars = this.label.length - 3;
+      const xOffset = remainingChars * 2;
+      text(this.label.substring(0, 3), this.x - xOffset, this.y);
+      textFont("Arial", 14); // Original value was 12
+      textAlign(LEFT);
+      fill(color(255, 255, 255)); // White color
+      text(this.label.substring(3), this.x - xOffset, this.y);
+    } else {
+      textAlign(CENTER);
+      text(this.label, this.x, this.y);
+    }
 
     pop(); // Restore the previous drawing style
   }
