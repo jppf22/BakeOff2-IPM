@@ -394,6 +394,9 @@ function createTargets(target_size, frame_offset_x, frame_offset_y, horizontal_s
   let u_x_start = r_x_start + (target_size + target_gap_horizontal)*4 + target_size + frame_offset_x*2 + frame_horizontal_gap; //
 
   let é_x_start = e_x_start + (target_size + target_gap_horizontal)*4 + target_size + frame_offset_x*2 + frame_horizontal_gap; //
+  if((e_x_start + (target_size + target_gap_horizontal)*4 + target_size + frame_offset_x*2 + frame_horizontal_gap) < (i_x_start + (target_size + target_gap_horizontal)*3 - target_gap_horizontal + frame_offset_x*2 + frame_horizontal_gap)){
+    é_x_start = i_x_start + (target_size + target_gap_horizontal)*3 - target_gap_horizontal + frame_offset_x*2 + frame_horizontal_gap;
+  }
   let é_y_start = e_y_start;
 
   let l_x_start = é_x_start;
