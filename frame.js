@@ -22,6 +22,7 @@ class Frame {
                 mouse_y > this.y &&
                 mouse_y < this.y + this.height
             )
+            /*
             ||
             (
                 mouse_x-45 > this.x &&
@@ -50,6 +51,7 @@ class Frame {
                 mouse_y-45 > this.y &&
                 mouse_y-45 < this.y + this.height
             )
+            */
         );
     }
 
@@ -60,8 +62,6 @@ class Frame {
         fill(color(this.color_r, this.color_g, this.color_b, 127));
         rect(this.x, this.y, this.width, this.height);
 
-        this.draw_label();
-
         pop(); // Restore the previous drawing style
     }
 
@@ -69,7 +69,7 @@ class Frame {
         push(); // Save the current drawing style
 
         // Draw target outline
-        fill(color(this.color_r, this.color_g, this.color_b, 80));
+        fill(color(this.color_r, this.color_g, this.color_b, 150));
         stroke(color(this.color_r, this.color_g, this.color_b));
         rect(this.x, this.y, this.width, this.height);
 
@@ -79,13 +79,25 @@ class Frame {
     }
 
     draw_label() {
-        // Draw label
-        textFont("Arial", this.font_size);
-        fill(color(this.color_r, this.color_g, this.color_b));
-        textAlign(CENTER); // Align label to center
+        // Calculate the maximum font size that fits within the frame
+        const maxFontSize = Math.min(this.width*1.2, this.height*1.2)*0.8;
         
-        //FIXME -- passsar o target size de alguma forma
-        text(this.label,this.x+this.width/2,this.y+this.height/2 +15);
+        // Draw label
+        textFont("Arial", maxFontSize);
+        
+        // Adjust color based on lightness
+        const lightness = (this.color_r + this.color_g + this.color_b) / 3;
+        const adjustedColor = lightness > 127 ? color(this.color_r + 63, this.color_g + 63, this.color_b + 63) : color(this.color_r + 145, this.color_g + 145, this.color_b + 145);
+        
+        fill(adjustedColor);
+        textAlign(CENTER,CENTER); // Align label to center
+        
+        // Calculate the position of the label
+        
+        const labelX = this.x + this.width / 2;
+        const labelY = this.y + this.height / 2;
+        
+        text(this.label, labelX, labelY);
     }
 
     get_target_arr() {

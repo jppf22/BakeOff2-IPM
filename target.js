@@ -18,7 +18,7 @@ class Target
   // within the target
   clicked(mouse_x, mouse_y)
   {
-    return (dist(this.x, this.y, mouse_x, mouse_y) < this.width / 2 || dist(this.x,this.y,mouse_x-45,mouse_y-45) < this.width / 2 || dist(this.x,this.y,mouse_x+45,mouse_y+45) < this.width / 2 || dist(this.x,this.y,mouse_x-45,mouse_y+45) < this.width / 2 || dist(this.x,this.y,mouse_x+45,mouse_y-45) < this.width / 2);
+    return (dist(this.x, this.y, mouse_x, mouse_y) < this.width / 2 /*|| dist(this.x,this.y,mouse_x-45,mouse_y-45) < this.width / 2 || dist(this.x,this.y,mouse_x+45,mouse_y+45) < this.width / 2 || dist(this.x,this.y,mouse_x-45,mouse_y+45) < this.width / 2 || dist(this.x,this.y,mouse_x+45,mouse_y-45) < this.width / 2*/);
   }
   
   

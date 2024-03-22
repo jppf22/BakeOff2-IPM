@@ -28,30 +28,31 @@ let current_trial         = 0;      // the current trial number (indexes into tr
 let attempt               = 0;      // users complete each test twice to account for practice (attemps 0 and 1)
 
 // Target and Frame list and layout variables
+// NOTA: AS FONTS VÃO SER IGNORADAS, NO ENTANTO DEIXAR TAR
 let targets               = [];
 const ELEMENTS            = 80;     // number of different targets
 const ELEMENTS_A          = 27;
 const FONT_TITLE_A        = 90;
 const ELEMENTS_É          =  1;
-const FONT_TITLE_É        = 36;
+const FONT_TITLE_É        = 70;
 const ELEMENTS_E          =  10;
 const FONT_TITLE_E        = 65; 
 const ELEMENTS_H          =  3;
-const FONT_TITLE_H        = 50;
+const FONT_TITLE_H        = 56;
 const ELEMENTS_I          =  9;
 const FONT_TITLE_I        = 50;
 const ELEMENTS_L          =  1;
-const FONT_TITLE_L        = 36;
+const FONT_TITLE_L        = 70;
 const ELEMENTS_N          =  1;
-const FONT_TITLE_N        = 36;
+const FONT_TITLE_N        = 70;
 const ELEMENTS_O          =  4;
 const FONT_TITLE_O        = 50;
 const ELEMENTS_R          =  13;
 const FONT_TITLE_R        = 57;
 const ELEMENTS_U          =  10;
-const FONT_TITLE_U        = 50;
+const FONT_TITLE_U        = 70;
 const ELEMENTS_Y          =  1;
-const FONT_TITLE_Y        = 36;
+const FONT_TITLE_Y        = 70;
 
 let frames                = [];
 const N_FRAMES            = 10;     // number of frames to be drawn   
@@ -96,43 +97,42 @@ function draw()
     fill(color(255,255,255));
     textAlign(LEFT);
     text("Trial " + (current_trial + 1) + " of " + trials.length, 50, 20);
-  
-    for (var i = 0; i < frames.length; i++) {
-      var targets_arr = frames[i].get_target_arr();
-      if (frames[i].hovered(mouseX, mouseY)) {
-        frames[i].hover();
-        for(var j = 0; j < targets_arr.length; j++){
-          targets[targets_arr[j]].is_cursor_on_frame = true;
+    
 
-          /*
-          TO-DO: experiment passing the frames color to be the one highlight the first three letters, in different shades of the same color
-          */
-
-        }
-      } else {
-        frames[i].stopHover();
-        for(var j = 0; j < targets_arr.length; j++){
-          targets[targets_arr[j]].is_cursor_on_frame = false;
-        }
-      }
-    }
-
-    // Find the target closest to the cursor
+    let frame_hovered_check = false;
     let closestTarget = null;
     let closestDistance = Infinity;
-    for (var i = 0; i < legendas.getRowCount(); i++) {
-      targets[i].draw();
-      let distance = dist(mouseX, mouseY, targets[i].x, targets[i].y);
-      if (distance < closestDistance) {
-      closestTarget = targets[i];
-      closestDistance = distance;
+
+    for (var i = 0; i < frames.length; i++) {
+      var targets_arr = frames[i].get_target_arr();
+      for(var j = 0; j < targets_arr.length; j++){
+        let distance = dist(mouseX, mouseY, targets[targets_arr[j]].x, targets[targets_arr[j]].y);
+        if (distance < closestDistance && distance < targets[targets_arr[j]].width / 2) {
+          closestTarget = targets[targets_arr[j]];
+          closestDistance = distance;
+        }
+        if(frames[i].hovered(mouseX, mouseY)){
+          if(frame_hovered_check == false){
+            frames[i].hover();
+            frame_hovered_check = true;
+          }
+          targets[targets_arr[j]].is_cursor_on_frame = true;
+        }
+        else{
+          targets[targets_arr[j]].is_cursor_on_frame = false;
+        }
+        targets[targets_arr[j]].draw();
+      }
+
+      if (!frames[i].hovered(mouseX, mouseY)) {
+        frames[i].stopHover();
       }
     }
 
     if(closestTarget){
       closestTarget.hover();
     }
-      
+
     // Draws the target label to be selected in the current trial. We include 
     // a black rectangle behind the trial label for optimal contrast in case 
     // you change the background colour of the sketch (DO NOT CHANGE THESE!)
@@ -299,32 +299,36 @@ function createTargets(target_size, frame_offset_x, frame_offset_y, horizontal_s
   let target_gaps_horizontal_space_2 = (horizontal_space_2 - frame_horizontal_gap) / (6+1+3+1 - 1);
   let target_gaps_horizontal_space_3 = (horizontal_space_3 - frame_horizontal_gap) / (2+6+5 - 1);
 
+  let target_gap_horizontal_a = Math.min(target_gaps_horizontal_space_1, target_gaps_horizontal_space_2);
+  let target_gap_horizontal_e = target_gaps_horizontal_space_1;
+  let target_gap_horizontal_i = target_gaps_horizontal_space_2;
+  let target_gap_horizontal_o = target_gaps_horizontal_space_3;
+  let target_gap_horizontal_r = target_gaps_horizontal_space_3;
+  let target_gap_horizontal_u = target_gaps_horizontal_space_3;
+  
+  let target_gap_horizontal = Math.max(Math.min(target_gap_horizontal_a, target_gap_horizontal_e, target_gap_horizontal_i, target_gap_horizontal_o, target_gap_horizontal_r, target_gap_horizontal_u),0);
+  
+  /*
   let target_gaps_vertical_space_1 = (vertical_space_1 - frame_vertical_gap) / (5+ 2 -1);
   let target_gaps_vertical_space_2 = (vertical_space_2 - frame_vertical_gap) / (5+3 - 1);
   let target_gaps_vertical_space_3 = (vertical_space_3 - frame_vertical_gap) / (2+3+3 - 1);
   let target_gaps_vertical_space_4 = (vertical_space_4 - frame_vertical_gap) / (2+3+2 -1 );
   let target_gaps_vertical_space_5 = (vertical_space_5 - frame_vertical_gap) / (1+1+1+1+2 - 1);
 
-  // make target_gap_a be the smallest between horizontal space 1 and horizontal space 2
-  let target_gap_horizontal_a = Math.min(target_gaps_horizontal_space_1, target_gaps_horizontal_space_2);
   let target_gap_vertical_a = Math.min(target_gaps_vertical_space_1, target_gaps_vertical_space_2);
-
-  let target_gap_horizontal_e = target_gaps_horizontal_space_1;
   let target_gap_vertical_e = Math.min(target_gaps_vertical_space_3,target_gaps_vertical_space_4);
-
   let target_gap_vertical_h = target_gaps_vertical_space_3;
-
-  let target_gap_horizontal_i = target_gaps_horizontal_space_2;
   let target_gap_vertical_i = target_gaps_vertical_space_4;
-
-  let target_gap_horizontal_o = target_gaps_horizontal_space_3;
   let target_gap_vertical_o = target_gaps_vertical_space_1;
-
-  let target_gap_horizontal_r = target_gaps_horizontal_space_3;
   let target_gap_vertical_r = target_gaps_vertical_space_2;
-
-  let target_gap_horizontal_u = target_gaps_horizontal_space_3;
   let target_gap_vertical_u = Math.min(target_gaps_vertical_space_4, target_gaps_vertical_space_5);
+  */
+
+  //Define the smallest target_gap vertically and horizontally
+  /*
+  let target_gap_vertical = Math.min(target_gap_vertical_a, target_gap_vertical_e, target_gap_vertical_h, target_gap_vertical_i, target_gap_vertical_o, target_gap_vertical_r, target_gap_vertical_u);
+  */
+  let target_gap_vertical = 0;
 
 
   let a_counter = 0;
@@ -357,24 +361,24 @@ function createTargets(target_size, frame_offset_x, frame_offset_y, horizontal_s
   let a_x_start = A_START_X;
   let a_y_start = A_START_Y;
 
-  let e_x_start = a_x_start + (target_size + target_gap_horizontal_a)*5 + target_size + frame_offset_x*2 + frame_horizontal_gap; //
+  let e_x_start = a_x_start + (target_size + target_gap_horizontal)*5 + target_size + frame_offset_x*2 + frame_horizontal_gap; //
   let e_y_start = a_y_start;
 
   let h_x_start = e_x_start + frame_horizontal_gap;
-  let h_y_start = e_y_start + (target_size + target_gap_vertical_e) + target_size + frame_offset_y*2 + frame_vertical_gap; //
+  let h_y_start = e_y_start + (target_size + target_gap_vertical) + target_size + frame_offset_y*2 + frame_vertical_gap; //
 
   let i_x_start = h_x_start + target_size + frame_offset_x*2 + frame_horizontal_gap; //
   let i_y_start = h_y_start;
 
   let o_x_start = a_x_start;
-  let o_y_start = a_y_start + (target_size + target_gap_vertical_a)*4 + target_size + frame_offset_y*2 + frame_vertical_gap; //
+  let o_y_start = a_y_start + (target_size + target_gap_vertical)*4 + target_size + frame_offset_y*2 + frame_vertical_gap; //
 
-  let r_x_start = o_x_start + (target_size + target_gap_horizontal_o) + target_size + frame_offset_x*2 + frame_horizontal_gap; //
+  let r_x_start = o_x_start + (target_size + target_gap_horizontal) + target_size + frame_offset_x*2 + frame_horizontal_gap; //
   let r_y_start = o_y_start; //
 
-  let u_x_start = r_x_start + (target_size + target_gap_horizontal_r)*4 + target_size + frame_offset_x*2 + frame_horizontal_gap; //
+  let u_x_start = r_x_start + (target_size + target_gap_horizontal)*4 + target_size + frame_offset_x*2 + frame_horizontal_gap; //
 
-  let é_x_start = e_x_start + (target_size + target_gap_horizontal_e)*4 + target_size + frame_offset_x*2 + frame_horizontal_gap; //
+  let é_x_start = e_x_start + (target_size + target_gap_horizontal)*4 + target_size + frame_offset_x*2 + frame_horizontal_gap; //
   let é_y_start = e_y_start;
 
   let l_x_start = é_x_start;
@@ -387,8 +391,8 @@ function createTargets(target_size, frame_offset_x, frame_offset_y, horizontal_s
   let y_y_start = n_y_start + target_size + frame_offset_y*2 + frame_vertical_gap*3;
 
   let u_y_start = y_y_start + target_size + frame_offset_y*2 + frame_vertical_gap;
-  if((y_y_start + target_size + frame_offset_y*2 + frame_vertical_gap) < (i_y_start + (target_size + target_gap_vertical_i)*3 - target_gap_vertical_i + frame_offset_y*2 + frame_vertical_gap)){
-    u_y_start = i_y_start + (target_size + target_gap_vertical_i)*3 - target_gap_vertical_i + frame_offset_y*2 + frame_vertical_gap;
+  if((y_y_start + target_size + frame_offset_y*2 + frame_vertical_gap) < (i_y_start + (target_size + target_gap_vertical)*3 - target_gap_vertical + frame_offset_y*2 + frame_vertical_gap)){
+    u_y_start = i_y_start + (target_size + target_gap_vertical)*3 - target_gap_vertical + frame_offset_y*2 + frame_vertical_gap;
   }
 
 
@@ -401,18 +405,18 @@ function createTargets(target_size, frame_offset_x, frame_offset_y, horizontal_s
       // NEW CODE --------------------------------
       switch(target_label[1]){
         case 'a':
-          target_x = a_x_start + (target_size + target_gap_horizontal_a)*(a_counter%6); 
+          target_x = a_x_start + (target_size + target_gap_horizontal)*(a_counter%6); 
           if(a_counter%6 == 0 && a_counter != 0){
             a_line++;
           }
-          target_y = a_y_start + (target_size + target_gap_vertical_a)*a_line;
+          target_y = a_y_start + (target_size + target_gap_vertical)*a_line;
           a_counter++;
 
           if(!is_frame_a_created){
             for(var i=legendas_index; i < legendas_index+ELEMENTS_A; i++){
               frame_targets.push(i);
             }
-            let frame_a = new Frame(a_x_start - frame_offset_x - target_size/2, a_y_start - frame_offset_y - target_size/2, (target_size + target_gap_horizontal_a)*6 - target_gap_horizontal_a + frame_offset_x*2, (target_size+target_gap_vertical_a)*5 - target_gap_vertical_a + frame_offset_y*2, "BA", 0 , target_color[0], target_color[1], target_color[2], frame_targets, FONT_TITLE_A); //
+            let frame_a = new Frame(a_x_start - frame_offset_x - target_size/2, a_y_start - frame_offset_y - target_size/2, (target_size + target_gap_horizontal)*6 - target_gap_horizontal + frame_offset_x*2, (target_size+target_gap_vertical)*5 - target_gap_vertical + frame_offset_y*2, "BA", 0 , target_color[0], target_color[1], target_color[2], frame_targets, FONT_TITLE_A); //
             frames.push(frame_a);
             is_frame_a_created = true;
           }
@@ -433,11 +437,11 @@ function createTargets(target_size, frame_offset_x, frame_offset_y, horizontal_s
 
           break;
         case 'e':
-          target_x = e_x_start + (target_size + target_gap_horizontal_e)*(e_counter%5);
+          target_x = e_x_start + (target_size + target_gap_horizontal)*(e_counter%5);
           if(e_counter%5 == 0 && e_counter != 0){
             e_line++;
           }
-          target_y = e_y_start + (target_size+target_gap_vertical_e)*e_line;
+          target_y = e_y_start + (target_size+target_gap_vertical)*e_line;
           e_counter++;
 
           for(var i=legendas_index; i < legendas_index+ELEMENTS_E; i++){
@@ -445,7 +449,7 @@ function createTargets(target_size, frame_offset_x, frame_offset_y, horizontal_s
           }
 
           if(!is_frame_e_created){
-            let frame_e = new Frame(e_x_start - frame_offset_x - target_size/2, e_y_start - frame_offset_y - target_size/2, (target_size + target_gap_horizontal_e)*5 - target_gap_horizontal_e + frame_offset_x*2, ((target_size+target_gap_vertical_e)*2) - target_gap_vertical_e + frame_offset_y*2, "BE", 0, target_color[0], target_color[1], target_color[2], frame_targets, FONT_TITLE_E); //
+            let frame_e = new Frame(e_x_start - frame_offset_x - target_size/2, e_y_start - frame_offset_y - target_size/2, (target_size + target_gap_horizontal)*5 - target_gap_horizontal + frame_offset_x*2, ((target_size+target_gap_vertical)*2) - target_gap_vertical + frame_offset_y*2, "BE", 0, target_color[0], target_color[1], target_color[2], frame_targets, FONT_TITLE_E); //
             frames.push(frame_e);
             is_frame_e_created = true;
           }
@@ -453,7 +457,7 @@ function createTargets(target_size, frame_offset_x, frame_offset_y, horizontal_s
           break;
         case 'h':
           target_x = h_x_start;
-          target_y = h_y_start + (target_size+target_gap_vertical_h)*h_counter;
+          target_y = h_y_start + (target_size+target_gap_vertical)*h_counter;
           h_counter++;
 
           for(var i=legendas_index; i < legendas_index+ELEMENTS_H; i++){
@@ -461,7 +465,7 @@ function createTargets(target_size, frame_offset_x, frame_offset_y, horizontal_s
           }
 
           if(!is_frame_h_created){
-            let frame_h = new Frame(h_x_start - frame_offset_x - target_size/2, h_y_start -  frame_offset_y - target_size/2, target_size + frame_offset_x*2, ((target_size+target_gap_vertical_h)*3)- target_gap_vertical_h +frame_offset_y*2, "BH", 2 , target_color[0], target_color[1], target_color[2], frame_targets, FONT_TITLE_H); //
+            let frame_h = new Frame(h_x_start - frame_offset_x - target_size/2, h_y_start -  frame_offset_y - target_size/2, target_size + frame_offset_x*2, ((target_size+target_gap_vertical)*3)- target_gap_vertical +frame_offset_y*2, "BH", 2 , target_color[0], target_color[1], target_color[2], frame_targets, FONT_TITLE_H); //
             frames.push(frame_h);
             is_frame_h_created = true;
           }
@@ -469,11 +473,11 @@ function createTargets(target_size, frame_offset_x, frame_offset_y, horizontal_s
           break;
 
         case 'i':
-          target_x = i_x_start + (target_size + target_gap_horizontal_i)*(i_counter%3);
+          target_x = i_x_start + (target_size + target_gap_horizontal)*(i_counter%3);
           if(i_counter%3 == 0 && i_counter != 0){
             i_line++;
           }
-          target_y = i_y_start + (target_size+target_gap_vertical_i)*i_line;
+          target_y = i_y_start + (target_size+target_gap_vertical)*i_line;
           i_counter++;
           
           for(var i=legendas_index; i < legendas_index+ELEMENTS_I; i++){
@@ -481,7 +485,7 @@ function createTargets(target_size, frame_offset_x, frame_offset_y, horizontal_s
           }
 
           if(!is_frame_i_created){
-            let frame_i = new Frame(i_x_start - frame_offset_x - target_size/2, i_y_start - frame_offset_y - target_size/2, (target_size + target_gap_horizontal_i)*3 - target_gap_horizontal_i + frame_offset_x*2, ((target_size+target_gap_vertical_i)*3) - target_gap_vertical_i + frame_offset_y*2, "BI", 1, target_color[0], target_color[1], target_color[2], frame_targets, FONT_TITLE_I); //
+            let frame_i = new Frame(i_x_start - frame_offset_x - target_size/2, i_y_start - frame_offset_y - target_size/2, (target_size + target_gap_horizontal)*3 - target_gap_horizontal + frame_offset_x*2, ((target_size+target_gap_vertical)*3) - target_gap_vertical + frame_offset_y*2, "BI", 1, target_color[0], target_color[1], target_color[2], frame_targets, FONT_TITLE_I); //
             frames.push(frame_i);
             is_frame_i_created = true;
           }
@@ -512,11 +516,11 @@ function createTargets(target_size, frame_offset_x, frame_offset_y, horizontal_s
 
           break;
         case 'o':
-          target_x = o_x_start + (target_size + target_gap_horizontal_o)*(o_counter%2);
+          target_x = o_x_start + (target_size + target_gap_horizontal)*(o_counter%2);
           if(o_counter%2 == 0 && o_counter != 0){
             o_line++;
           }
-          target_y = o_y_start + (target_size+target_gap_vertical_o)*o_line;
+          target_y = o_y_start + (target_size+target_gap_vertical)*o_line;
           o_counter++;
 
           for(var i=legendas_index; i < legendas_index+ELEMENTS_O; i++){
@@ -524,18 +528,18 @@ function createTargets(target_size, frame_offset_x, frame_offset_y, horizontal_s
           }
 
           if(!is_frame_o_created){
-            let frame_o = new Frame(o_x_start - frame_offset_x - target_size/2, o_y_start - frame_offset_y - target_size/2, (target_size + target_gap_horizontal_o)*2 - target_gap_horizontal_o + frame_offset_x*2, ((target_size+target_gap_vertical_o)*2) - target_gap_vertical_o + frame_offset_y*2, "BO", 0, target_color[0], target_color[1], target_color[2], frame_targets, FONT_TITLE_O); //
+            let frame_o = new Frame(o_x_start - frame_offset_x - target_size/2, o_y_start - frame_offset_y - target_size/2, (target_size + target_gap_horizontal)*2 - target_gap_horizontal + frame_offset_x*2, ((target_size+target_gap_vertical)*2) - target_gap_vertical + frame_offset_y*2, "BO", 0, target_color[0], target_color[1], target_color[2], frame_targets, FONT_TITLE_O); //
             frames.push(frame_o);
             is_frame_o_created = true;
           }
 
           break;
         case 'r':
-          target_x = r_x_start + (target_size + target_gap_horizontal_r)*(r_counter%5);
+          target_x = r_x_start + (target_size + target_gap_horizontal)*(r_counter%5);
           if(r_counter%5 == 0 && r_counter != 0){
             r_line++;
           }
-          target_y = r_y_start + (target_size + target_gap_vertical_r)*r_line;
+          target_y = r_y_start + (target_size + target_gap_vertical)*r_line;
           r_counter++;
 
           for(var i=legendas_index; i < legendas_index+ELEMENTS_R; i++){
@@ -543,18 +547,18 @@ function createTargets(target_size, frame_offset_x, frame_offset_y, horizontal_s
           }
 
           if(!is_frame_r_created){
-            let frame_r = new Frame(r_x_start - frame_offset_x - target_size/2, r_y_start - frame_offset_y - target_size/2, (target_size + target_gap_horizontal_r)*5 - target_gap_horizontal_r + frame_offset_x*2, ((target_size+target_gap_vertical_r)*3) - target_gap_vertical_r + frame_offset_y*2, "BR", 0, target_color[0], target_color[1], target_color[2], frame_targets, FONT_TITLE_R); //
+            let frame_r = new Frame(r_x_start - frame_offset_x - target_size/2, r_y_start - frame_offset_y - target_size/2, (target_size + target_gap_horizontal)*5 - target_gap_horizontal + frame_offset_x*2, ((target_size+target_gap_vertical)*3) - target_gap_vertical + frame_offset_y*2, "BR", 0, target_color[0], target_color[1], target_color[2], frame_targets, FONT_TITLE_R); //
             frames.push(frame_r);
             is_frame_r_created = true;
           }
 
           break;
         case 'u':
-          target_x = u_x_start + (target_size +target_gap_horizontal_u)*(u_counter%5);
+          target_x = u_x_start + (target_size +target_gap_horizontal)*(u_counter%5);
           if(u_counter%5 == 0 && u_counter != 0){
             u_line++;
           }
-          target_y = u_y_start + (target_size+target_gap_vertical_u)*u_line;
+          target_y = u_y_start + (target_size+target_gap_vertical)*u_line;
           u_counter++;
 
           for(var i=legendas_index; i < legendas_index+ELEMENTS_U; i++){
@@ -562,7 +566,7 @@ function createTargets(target_size, frame_offset_x, frame_offset_y, horizontal_s
           }
 
           if(!is_frame_u_created){
-            let frame_u = new Frame(u_x_start - frame_offset_x - target_size/2, u_y_start - frame_offset_y - target_size/2, (target_size + target_gap_horizontal_u)*5 - target_gap_horizontal_u + frame_offset_x*2, ((target_size+target_gap_vertical_u)*2) - target_gap_vertical_u + frame_offset_y*2, "BU", 0, target_color[0], target_color[1], target_color[2], frame_targets, FONT_TITLE_U); //
+            let frame_u = new Frame(u_x_start - frame_offset_x - target_size/2, u_y_start - frame_offset_y - target_size/2, (target_size + target_gap_horizontal)*5 - target_gap_horizontal + frame_offset_x*2, ((target_size+target_gap_vertical)*2) - target_gap_vertical + frame_offset_y*2, "BU", 0, target_color[0], target_color[1], target_color[2], frame_targets, FONT_TITLE_U); //
             frames.push(frame_u);
             is_frame_u_created = true;
           }
