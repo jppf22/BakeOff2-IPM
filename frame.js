@@ -1,5 +1,5 @@
 class Frame {
-    constructor(x, y, w, h, label, label_pos, color_r, color_g, color_b, targets_arr) {
+    constructor(x, y, w, h, label, label_pos, color_r, color_g, color_b, targets_arr, font_size) {
         this.x = x;
         this.y = y;
         this.width = w;
@@ -10,6 +10,7 @@ class Frame {
         this.color_g = color_g;
         this.color_b = color_b;
         this.targets_arr = targets_arr;
+        this.font_size = font_size;
     }
 
     hovered(mouse_x, mouse_y) {
@@ -68,7 +69,7 @@ class Frame {
         push(); // Save the current drawing style
 
         // Draw target outline
-        noFill();
+        fill(color(this.color_r, this.color_g, this.color_b, 80));
         stroke(color(this.color_r, this.color_g, this.color_b));
         rect(this.x, this.y, this.width, this.height);
 
@@ -79,14 +80,12 @@ class Frame {
 
     draw_label() {
         // Draw label
-        textFont("Arial", 36);
+        textFont("Arial", this.font_size);
         fill(color(this.color_r, this.color_g, this.color_b));
         textAlign(CENTER); // Align label to center
-
-        if (this.label_pos === 0) text(this.label, this.x + this.width / 2, this.y - 10); // Adjust the y-coordinate to display the label above the frame
-        else if(this.label_pos === 1) text(this.label, this.x + this.width / 2, this.y + this.height + 40); // Adjust the y-coordinate to display the label below the frame
-        else if(this.label_pos === 2) text(this.label, this.x - this.width*0.28, this.y + this.height / 2); // Adjust the x-coordinate to display the label to the left of the frame
-        else if(this.label_pos === 3) text(this.label, this.x + this.width + this.width*0.28 , this.y + this.height / 2); // Adjust the x-coordinate to display the label to the right of the frame
+        
+        //FIXME -- passsar o target size de alguma forma
+        text(this.label,this.x+this.width/2,this.y+this.height/2 +15);
     }
 
     get_target_arr() {
