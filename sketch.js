@@ -72,7 +72,6 @@ function draw()
   {     
     // Set cursor to a circle with around 1 cm of diameter
     cursor('Cursor_Test.png',45,45);
-    //cursor(10);
 
     // The user is interacting with the 6x3 target grid
     background(color(0,0,0));        // sets background to black
@@ -89,6 +88,11 @@ function draw()
         frames[i].hover();
         for(var j = 0; j < targets_arr.length; j++){
           targets[targets_arr[j]].is_cursor_on_frame = true;
+
+          /*
+          TO-DO: experiment passing the frames color to be the one highlight the first three letters, in different shades of the same color
+          */
+
         }
       } else {
         frames[i].stopHover();
@@ -264,18 +268,14 @@ function continueTest()
 }
 
 // Creates and positions the UI targets
-function createTargets(target_size, screen_width, screen_height)
+function createTargets(target_size, target_gap, frame_offset_x, frame_offset_y, frame_horizontal_gap, frame_vertical_gap)
 {
   
   let legendasArray = legendas.getArray();
   legendasArray.sort((a, b) => a[1].localeCompare(b[1]));
   console.log(legendasArray);
   
-  let target_gap = screen_width*0.005;
-  let frame_offset_x = screen_width*0.005; 
-  let frame_offset_y = screen_width*0.005;
-
-  // frame_horizonta_gap
+  // frame_horizontal_gap
   // frame_vertical_gap
 
   let a_counter = 0;
@@ -305,38 +305,38 @@ function createTargets(target_size, screen_width, screen_height)
   let u_line = 0;
   let is_frame_u_created = false;
 
-  let a_x_start = screen_width*0.08; //
-  let a_y_start = screen_width*0.08; //
-  
-  let e_x_start = a_x_start + (target_size + target_gap)*5 + target_size + frame_offset_x*2 + screen_width*0.02; //
+  let a_x_start = target_size*1.5;
+  let a_y_start = target_size;
+
+  let e_x_start = a_x_start + (target_size + target_gap)*5 + target_size + frame_offset_x*2 + frame_horizontal_gap; //
   let e_y_start = a_y_start;
 
-  let h_x_start = e_x_start + screen_width*0.02;
-  let h_y_start = e_y_start + target_size*2 + frame_offset_y*2 + screen_height*0.025; //
+  let h_x_start = e_x_start + frame_horizontal_gap;
+  let h_y_start = e_y_start + target_size*2 + frame_offset_y*2 + frame_vertical_gap/4; //
 
-  let i_x_start = h_x_start + target_size + frame_offset_x*2 + screen_width*0.02; //
+  let i_x_start = h_x_start + target_size + frame_offset_x*2 + frame_horizontal_gap; //
   let i_y_start = h_y_start;
 
   let o_x_start = a_x_start;
-  let o_y_start = a_y_start + target_size*5 + frame_offset_y*2 + screen_height*0.05; //
+  let o_y_start = a_y_start + target_size*5 + frame_offset_y*2 + frame_vertical_gap; //
 
-  let r_x_start = o_x_start + (target_size + target_gap) + target_size + frame_offset_x*2 + screen_width*0.02; //
+  let r_x_start = o_x_start + (target_size + target_gap) + target_size + frame_offset_x*2 + frame_horizontal_gap; //
   let r_y_start = o_y_start;
 
-  let u_x_start = r_x_start + (target_size + target_gap)*4 + target_size + frame_offset_x*2 + screen_width*0.02; //
-  let u_y_start = r_y_start + target_size;
+  let u_x_start = r_x_start + (target_size + target_gap)*4 + target_size + frame_offset_x*2 + frame_horizontal_gap; //
 
-  let é_x_start = e_x_start + (target_size + target_gap)*4 + target_size + frame_offset_x*2 + screen_width*0.02; //
+  let é_x_start = e_x_start + (target_size + target_gap)*4 + target_size + frame_offset_x*2 + frame_horizontal_gap; //
   let é_y_start = e_y_start;
 
   let l_x_start = é_x_start;
-  let l_y_start = é_y_start + target_size + frame_offset_y*2 + screen_height*0.05;
+  let l_y_start = é_y_start + target_size + frame_offset_y*2 + frame_vertical_gap;
 
   let n_x_start = l_x_start;
-  let n_y_start = l_y_start + target_size + frame_offset_y*2 + screen_height*0.05;
+  let n_y_start = l_y_start + target_size + frame_offset_y*2 + frame_vertical_gap;
 
   let y_x_start = n_x_start;
-  let y_y_start = n_y_start + target_size + frame_offset_y*2 + screen_height*0.05;
+  let y_y_start = n_y_start + target_size + frame_offset_y*2 + frame_vertical_gap;
+  let u_y_start = y_y_start + target_size + frame_offset_y*2 + frame_vertical_gap;
 
   for(var legendas_index= 0; legendas_index < 80; legendas_index++){
       let target_label = legendasArray[legendas_index][1];
@@ -550,7 +550,11 @@ function windowResized()
     let screen_width   = display.width * 2.54;             // screen width
     let screen_height  = display.height * 2.54;            // screen height
     let target_size    = 1.8;                                // sets the target size (will be converted to cm when passed to createTargets)
-
+    let target_gap     = target_size*0.1;                                // sets the gap between targets (will be converted to cm when passed to createTargets)
+    let frame_offset_x = target_size*0.2;
+    let frame_offset_y = target_size*0.1;
+    let frame_horizontal_gap = target_size*0.25;
+    let frame_vertical_gap = target_size*0.5;
     /*
 
     let horizontal_gap = screen_width - target_size * GRID_COLUMNS;// empty space in cm across the x-axis (based on 10 targets per row)
@@ -561,7 +565,7 @@ function windowResized()
     createTargets(target_size * PPCM, horizontal_gap * PPCM - 80, vertical_gap * PPCM - 80);
     */
     
-    createTargets(target_size * PPCM, screen_width * PPCM, screen_height * PPCM);
+    createTargets(target_size * PPCM, target_gap * PPCM, frame_offset_x * PPCM, frame_offset_y * PPCM, frame_horizontal_gap * PPCM, frame_vertical_gap * PPCM);
 
     // Starts drawing targets immediately after we go fullscreen
     draw_targets = true;
