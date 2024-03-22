@@ -383,13 +383,13 @@ function createTargets(target_size, frame_offset_x, frame_offset_y, horizontal_s
   let é_y_start = e_y_start;
 
   let l_x_start = é_x_start;
-  let l_y_start = é_y_start + target_size + frame_offset_y*2 + frame_vertical_gap*3;
+  let l_y_start = é_y_start + target_size + frame_offset_y*2 + frame_vertical_gap;
 
   let n_x_start = l_x_start;
-  let n_y_start = l_y_start + target_size + frame_offset_y*2 + frame_vertical_gap*3;
+  let n_y_start = l_y_start + target_size + frame_offset_y*2 + frame_vertical_gap;
 
   let y_x_start = n_x_start;
-  let y_y_start = n_y_start + target_size + frame_offset_y*2 + frame_vertical_gap*3;
+  let y_y_start = n_y_start + target_size + frame_offset_y*2 + frame_vertical_gap;
 
   let u_y_start = y_y_start + target_size + frame_offset_y*2 + frame_vertical_gap;
   if((y_y_start + target_size + frame_offset_y*2 + frame_vertical_gap) < (i_y_start + (target_size + target_gap_vertical)*3 - target_gap_vertical + frame_offset_y*2 + frame_vertical_gap)){
