@@ -291,13 +291,13 @@ function createTargets(target_size, frame_offset_x, frame_offset_y, horizontal_s
   console.log(legendasArray);
 
   //TEMP -!!!!!!
-  let frame_horizontal_gap = target_size*0.5;
+  let frame_horizontal_gap = target_size*0.1;
   let frame_vertical_gap = target_size*0.2;
   
   // Determine target gap and frame gaps
-  let target_gaps_horizontal_space_1 = (horizontal_space_1 - frame_horizontal_gap) / (6+5+1 - 1);
-  let target_gaps_horizontal_space_2 = (horizontal_space_2 - frame_horizontal_gap) / (6+1+3+1 - 1);
-  let target_gaps_horizontal_space_3 = (horizontal_space_3 - frame_horizontal_gap) / (2+6+5 - 1);
+  let target_gaps_horizontal_space_1 = (horizontal_space_1 - frame_horizontal_gap*2) / (6+5+1 - 1);
+  let target_gaps_horizontal_space_2 = (horizontal_space_2 - frame_horizontal_gap*3) / (6+1+3+1 - 1);
+  let target_gaps_horizontal_space_3 = (horizontal_space_3 - frame_horizontal_gap*3) / (2+6+5 - 1);
 
   let target_gap_horizontal_a = Math.min(target_gaps_horizontal_space_1, target_gaps_horizontal_space_2);
   let target_gap_horizontal_e = target_gaps_horizontal_space_1;
@@ -308,12 +308,11 @@ function createTargets(target_size, frame_offset_x, frame_offset_y, horizontal_s
   
   let target_gap_horizontal = Math.max(Math.min(target_gap_horizontal_a, target_gap_horizontal_e, target_gap_horizontal_i, target_gap_horizontal_o, target_gap_horizontal_r, target_gap_horizontal_u),0);
   
-  /*
   let target_gaps_vertical_space_1 = (vertical_space_1 - frame_vertical_gap) / (5+ 2 -1);
   let target_gaps_vertical_space_2 = (vertical_space_2 - frame_vertical_gap) / (5+3 - 1);
-  let target_gaps_vertical_space_3 = (vertical_space_3 - frame_vertical_gap) / (2+3+3 - 1);
-  let target_gaps_vertical_space_4 = (vertical_space_4 - frame_vertical_gap) / (2+3+2 -1 );
-  let target_gaps_vertical_space_5 = (vertical_space_5 - frame_vertical_gap) / (1+1+1+1+2 - 1);
+  let target_gaps_vertical_space_3 = (vertical_space_3 - frame_vertical_gap*2) / (2+3+3 - 1);
+  let target_gaps_vertical_space_4 = (vertical_space_4 - frame_vertical_gap*2) / (2+3+2 -1 );
+  let target_gaps_vertical_space_5 = (vertical_space_5 - frame_vertical_gap*4) / (1+1+1+1+2 - 1);
 
   let target_gap_vertical_a = Math.min(target_gaps_vertical_space_1, target_gaps_vertical_space_2);
   let target_gap_vertical_e = Math.min(target_gaps_vertical_space_3,target_gaps_vertical_space_4);
@@ -322,13 +321,12 @@ function createTargets(target_size, frame_offset_x, frame_offset_y, horizontal_s
   let target_gap_vertical_o = target_gaps_vertical_space_1;
   let target_gap_vertical_r = target_gaps_vertical_space_2;
   let target_gap_vertical_u = Math.min(target_gaps_vertical_space_4, target_gaps_vertical_space_5);
-  */
+  
 
   //Define the smallest target_gap vertically and horizontally
-  /*
-  let target_gap_vertical = Math.min(target_gap_vertical_a, target_gap_vertical_e, target_gap_vertical_h, target_gap_vertical_i, target_gap_vertical_o, target_gap_vertical_r, target_gap_vertical_u);
-  */
-  let target_gap_vertical = 0;
+  let target_gap_vertical = Math.max(Math.min(target_gap_vertical_a, target_gap_vertical_e, target_gap_vertical_h, target_gap_vertical_i, target_gap_vertical_o, target_gap_vertical_r, target_gap_vertical_u),0);
+
+  
 
 
   let a_counter = 0;
@@ -375,6 +373,9 @@ function createTargets(target_size, frame_offset_x, frame_offset_y, horizontal_s
 
   let r_x_start = o_x_start + (target_size + target_gap_horizontal) + target_size + frame_offset_x*2 + frame_horizontal_gap; //
   let r_y_start = o_y_start; //
+  if(o_y_start < h_y_start + (target_size + target_gap_vertical)*3 - target_gap_vertical + frame_offset_y*2 + frame_vertical_gap){
+    r_y_start = h_y_start + (target_size + target_gap_vertical)*3 - target_gap_vertical + frame_offset_y*2 + frame_vertical_gap;
+  }  
 
   let u_x_start = r_x_start + (target_size + target_gap_horizontal)*4 + target_size + frame_offset_x*2 + frame_horizontal_gap; //
 
