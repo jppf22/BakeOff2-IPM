@@ -326,7 +326,21 @@ function createTargets(target_size, frame_offset_x, frame_offset_y, horizontal_s
   //Define the smallest target_gap vertically and horizontally
   let target_gap_vertical = Math.max(Math.min(target_gap_vertical_a, target_gap_vertical_e, target_gap_vertical_h, target_gap_vertical_i, target_gap_vertical_o, target_gap_vertical_r, target_gap_vertical_u),0);
 
-  
+  while(((horizontal_space_1 - frame_horizontal_gap*2 - target_gap_horizontal*11 < 0) || (horizontal_space_2 - frame_horizontal_gap*3 - target_gap_horizontal*11 < 0) || (horizontal_space_3 - frame_horizontal_gap*3 - target_gap_horizontal*11 < 0)) && frame_horizontal_gap > 0){
+    frame_horizontal_gap = frame_horizontal_gap - 0.1;
+  }
+
+  if(frame_horizontal_gap < 0){
+    frame_horizontal_gap = 0;
+  }
+
+  while(((vertical_space_1 - frame_vertical_gap - target_gap_vertical*6 < 0) || (vertical_space_2 - frame_vertical_gap - target_gap_vertical*7 < 0) || (vertical_space_3 - frame_vertical_gap*2 - target_gap_vertical*7 < 0) || (vertical_space_4 - frame_vertical_gap*2 - target_gap_vertical*6 < 0) || (vertical_space_5 - frame_vertical_gap*4 - target_gap_vertical*5 < 0)) && frame_vertical_gap > 0){
+    frame_vertical_gap = frame_vertical_gap - 0.1;
+  }
+
+  if(frame_vertical_gap < 0){
+    frame_vertical_gap = 0;
+  }
 
 
   let a_counter = 0;
