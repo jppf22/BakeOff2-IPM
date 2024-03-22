@@ -291,8 +291,8 @@ function createTargets(target_size, frame_offset_x, frame_offset_y, horizontal_s
   console.log(legendasArray);
 
   //TEMP -!!!!!!
-  let frame_horizontal_gap = target_size*0.1;
-  let frame_vertical_gap = target_size*0.2;
+  let frame_horizontal_gap = target_size;
+  let frame_vertical_gap = target_size*0.5;
   
   // Determine target gap and frame gaps
   let target_gaps_horizontal_space_1 = (horizontal_space_1 - frame_horizontal_gap*2) / (6+5+1 - 1);
@@ -557,7 +557,7 @@ function createTargets(target_size, frame_offset_x, frame_offset_y, horizontal_s
           target_y = r_y_start + (target_size + target_gap_vertical)*r_line;
           r_counter++;
 
-          for(var i=legendas_index; i < legendas_index+ELEMENTS_R; i++){
+          for(var i=legendas_index; i < legendas_index+ELEMENTS_R+1; i++){
             frame_targets.push(i);
           }
 
@@ -629,11 +629,6 @@ function windowResized()
     let frame_offset_x = target_size*0.05;
     let frame_offset_y = target_size*0.02;
     
-    /*
-    let target_gap     = target_size*0.1;                     
-    let frame_horizontal_gap = target_size*0.25;
-    let frame_vertical_gap = target_size*0.5;
-    */
 
     let horizontal_space_1 = screen_width - target_size*(6+5+1); //3 frames  = 6 + 5 + 1 alvos
     let horizontal_space_2 = screen_width - target_size*(6+1+3+1); //4 frames = 6 + 1 + 3 + 1 alvos
